@@ -29,7 +29,10 @@ use std::fmt;
 // Grids ------------------------------------------------------------------------------------------
 
 enum TileGrid {
-    RectangleTall3x6([[Tile; 3]; 6]),
+    RectangleTall3x7([[Tile; 3]; 7]),
+    RectangleTall4x7([[Tile; 4]; 7]),
+    RectangleWide7x3([[Tile; 7]; 3]),
+    RectangleWide7x4([[Tile; 7]; 4]),
     Square8x8([[Tile; 8]; 8])
 }
 
@@ -41,6 +44,42 @@ impl fmt::Display for TileGrid {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             TileGrid::Square8x8(grid) => {
+                for row in grid {
+                    for element in row {
+                        write!(f, "{}", element)?;
+                    }
+                    write!(f, "{}", "\n");
+                }
+                write!(f, "{}", "")
+            },
+            TileGrid::RectangleTall3x7(grid) => {
+                for row in grid {
+                    for element in row {
+                        write!(f, "{}", element)?;
+                    }
+                    write!(f, "{}", "\n");
+                }
+                write!(f, "{}", "")
+            },
+            TileGrid::RectangleTall4x7(grid) => {
+                for row in grid {
+                    for element in row {
+                        write!(f, "{}", element)?;
+                    }
+                    write!(f, "{}", "\n");
+                }
+                write!(f, "{}", "")
+            },
+            TileGrid::RectangleWide7x3(grid) => {
+                for row in grid {
+                    for element in row {
+                        write!(f, "{}", element)?;
+                    }
+                    write!(f, "{}", "\n");
+                }
+                write!(f, "{}", "")
+            },
+            TileGrid::RectangleWide7x4(grid) => {
                 for row in grid {
                     for element in row {
                         write!(f, "{}", element)?;
@@ -108,7 +147,7 @@ struct Room {
     grid: TileGrid,
     exits: Exits,
     longest_dimension: u8,
-    kind: RoomKind
+    kind: RoomKind,
 }
 
 struct RoomExit {
@@ -138,11 +177,6 @@ enum RoomKind {
     Passage
 }
 
-enum Orientation {
-    Vertical,
-    Horizontal
-}
-
 impl fmt::Display for Room {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.grid)
@@ -169,31 +203,57 @@ fn main() {
 fn generate_map() -> Map {
 
     let starting_area = generate_starting_area();
+    let passage_top = generate_passage_from(&starting_area, ExitLocation::Bottom);
 
     // The problem here is that the only reason I know these passages are in order
     // top, bottom, left, right
     // is because that's the order I added them in to the starting_area structure,
     // not because there's any data saying so.
     // Definitely a problem.
-    let passages: Vec<Room> = Vec::new();
-    match starting_area.exits {
-        Exits::Four(room_exits) => {
-            for (i, exit) in room_exits.iter().enumerate() {
-                passages.push(generate_passage_from(&starting_area, exit.location));
-            }
-        }
-    }
+    // let mut passages: Vec<Room> = Vec::new();
+    // match starting_area.exits {
+    //     Exits::One(room_exits) => {
+    //         for exit in room_exits.iter() {
+    //             passages.push(generate_passage_from(starting_area, exit.location));
+    //         }
+    //     },
+    //     Exits::Two(room_exits) => {
+    //         for (i, exit) in room_exits.iter().enumerate() {
+    //             passages.push(generate_passage_from(starting_area, exit.location));
+    //         }
+    //     },
+    //     Exits::Three(room_exits) => {
+    //         for (i, exit) in room_exits.iter().enumerate() {
+    //             passages.push(generate_passage_from(starting_area, exit.location));
+    //         }
+    //     },
+    //     Exits::Four(room_exits) => {
+    //         for (i, exit) in room_exits.iter().enumerate() {
+    //             passages.push(generate_passage_from(starting_area, exit.location));
+    //         }
+    //     },
+    //     Exits::Five(room_exits) => {
+    //         for (i, exit) in room_exits.iter().enumerate() {
+    //             passages.push(generate_passage_from(starting_area, exit.location));
+    //         }
+    //     },
+    //     Exits::Six(room_exits) => {
+    //         for (i, exit) in room_exits.iter().enumerate() {
+    //             passages.push(generate_passage_from(starting_area, exit.location));
+    //         }
+    //     }
+    // }
 
     // map[column][row]
     let mut map: [[Room; 3]; 3] = [
         [
             generate_starting_area(),
-            generate_starting_area(),
+            passage_top,
             generate_starting_area()
         ],
         [
             generate_starting_area(),
-            generate_starting_area(),
+            starting_area,
             generate_starting_area()
         ],
         [
@@ -521,15 +581,8 @@ fn generate_starting_area_1() -> Room {
     }
 }
 
-fn generate_passage_from(room: &Room, origin: ExitLocation) -> Room {
-    let orientation = match origin {
-        ExitLocation::Top => Orientation::Vertical,
-        ExitLocation::Bottom => Orientation::Vertical,
-        ExitLocation::Left => Orientation::Horizontal,
-        ExitLocation::Right => Orientation::Horizontal
-    };
-
-    let rng = rand::thread_rng();
+fn generate_passage_from(room: &Room, entrance_location: ExitLocation) -> Room {
+    let mut rng = rand::thread_rng();
 
     let width = match room.kind {
         RoomKind::Passage => {
@@ -566,46 +619,49 @@ fn generate_passage_from(room: &Room, origin: ExitLocation) -> Room {
                 17..=20 => 40,
                 _ => 10
             }
-        }
+        },
+        _ => 10 // technically this should throw an error. Entrance should never get here
     };
 
     match rng.gen_range(1..21) {
-        1..=2 => generate_passage_1(orientation, width),
-        // 3 => generate_passage_2(orientation, width),
-        // 4 => generate_passage_3(orientation, width),
-        // 5 => generate_passage_4(orientation, width),
-        // 6..=7 => generate_passage_5(orientation, width),
-        // 8..=9 => generate_passage_6(orientation, width),
-        // 10 => generate_passage_7(orientation, width),
-        // 11..=12 => generate_passage_8(orientation, width),
-        // 13..=14 => generate_passage_9(orientation, width),
-        // 15..=19 => generate_chamber(orientation, width),
-        // 20 => generate_stairs(orientation, width),
-        _ => generate_passage_1(orientation, width)
+        1..=2 => generate_passage_1(entrance_location, width),
+        // 3 => generate_passage_2(entrance_location, width),
+        // 4 => generate_passage_3(entrance_location, width),
+        // 5 => generate_passage_4(entrance_location, width),
+        // 6..=7 => generate_passage_5(entrance_location, width),
+        // 8..=9 => generate_passage_6(entrance_location, width),
+        // 10 => generate_passage_7(entrance_location, width),
+        // 11..=12 => generate_passage_8(entrance_location, width),
+        // 13..=14 => generate_passage_9(entrance_location, width),
+        // 15..=19 => generate_chamber(entrance_location, width),
+        // 20 => generate_stairs(entrance_location, width),
+        _ => generate_passage_1(entrance_location, width)
     }
 }
 
-fn generate_passage_1(orientation: Orientation, width: u8) -> Room {
+fn generate_passage_1(entrance_location: ExitLocation, width: u8) -> Room {
     /*
-        At this point I know exactly which passage I need to print.
+        At this point I should know exactly which passage I need to print.
 
         Passage 1
         ----------
         P1 Variant 1a
-        #  #
-        #  #
-        #  #
-        #  #
-        #  #
-        #  #
+        # # #    #   #
+        #   #    #   #
+        #   #    #   #
+        #   #    #   #
+        #   #    #   #
+        #   # or #   # 
+        #   #    # # #
 
         P1 Variant 2a
-        #    #
-        #    #
-        #    #
-        #    #
-        #    #
-        #    #
+        # # # #    # # # #
+        #     #    #     #
+        #     #    #     #
+        #     #    #     #
+        #     #    #     #
+        #     #    #     #
+        #     # or #     #
 
         P1 Variant 3a
         #        #
@@ -640,15 +696,15 @@ fn generate_passage_1(orientation: Orientation, width: u8) -> Room {
         #   ##      ##   #
 
         P1 Variant 1b
-        # # # # # #
-                   
-        # # # # # #
+        # # # # # # #    # # # # # # #
+                    # or #
+        # # # # # # #    # # # # # # #
 
         P1 Variant 2b
-        # # # # # #
-
-
-        # # # # # #
+        # # # # # # # or # # # # # # #
+                    #    #
+                    #    #
+        # # # # # # #    # # # # # # #
 
         P1 Variant 3b
         # # # # # #
@@ -693,41 +749,46 @@ fn generate_passage_1(orientation: Orientation, width: u8) -> Room {
         # # # # # #
     */
 
-    match orientation {
-        Orientation::Vertical => {
+    match entrance_location {
+        ExitLocation::Top => {
             match width {
                 5 => {
-                    let passage_1: [[Tile; 3]; 6] = [
+                    let passage_1: [[Tile; 3]; 7] = [
                         [
-                            Tile  { kind: TileKind::Wall, icon: Icon::Wall },
-                            Tile  { kind: TileKind::Floor, icon: Icon::Floor },
-                            Tile  { kind: TileKind::Wall, icon: Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            Tile  { kind: TileKind::Wall, icon: Icon::Wall },
-                            Tile  { kind: TileKind::Floor, icon: Icon::Floor },
-                            Tile  { kind: TileKind::Wall, icon: Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            Tile  { kind: TileKind::Wall, icon: Icon::Wall },
-                            Tile  { kind: TileKind::Floor, icon: Icon::Floor },
-                            Tile  { kind: TileKind::Wall, icon: Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            Tile  { kind: TileKind::Wall, icon: Icon::Wall },
-                            Tile  { kind: TileKind::Floor, icon: Icon::Floor },
-                            Tile  { kind: TileKind::Wall, icon: Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            Tile  { kind: TileKind::Wall, icon: Icon::Wall },
-                            Tile  { kind: TileKind::Floor, icon: Icon::Floor },
-                            Tile  { kind: TileKind::Wall, icon: Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            Tile  { kind: TileKind::Wall, icon: Icon::Wall },
-                            Tile  { kind: TileKind::Floor, icon: Icon::Floor },
-                            Tile  { kind: TileKind::Wall, icon: Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ]
                     ];
 
                     let top_exit = RoomExit {
@@ -735,22 +796,603 @@ fn generate_passage_1(orientation: Orientation, width: u8) -> Room {
                         leads_to: RoomKind::Chamber
                     };
 
+                    Room {
+                        grid: TileGrid::RectangleTall3x7(passage_1),
+                        exits: Exits::One([top_exit]),
+                        longest_dimension: 30,
+                        kind: RoomKind::Passage
+                    }
+                },
+                10 => {
+                    let passage_1: [[Tile; 4]; 7] = [
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ]
+                    ];
+
+                    let top_exit = RoomExit {
+                        location: ExitLocation::Top,
+                        leads_to: RoomKind::Chamber
+                    };
+
+                    Room {
+                        grid: TileGrid::RectangleTall4x7(passage_1),
+                        exits: Exits::One([top_exit]),
+                        longest_dimension: 30,
+                        kind: RoomKind::Passage
+                    }
+                },
+                _ => { // This needs to be an exhaustive list of the room widths. 10 is here as a placeholder
+                    let passage_1: [[Tile; 4]; 7] = [
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ]
+                    ];
+
+                    let top_exit = RoomExit {
+                        location: ExitLocation::Top,
+                        leads_to: RoomKind::Chamber
+                    };
+
+                    Room {
+                        grid: TileGrid::RectangleTall4x7(passage_1),
+                        exits: Exits::One([top_exit]),
+                        longest_dimension: 30,
+                        kind: RoomKind::Passage
+                    }
+                }
+            }
+        },
+        ExitLocation::Bottom => {
+            match width {
+                5 => {
+                    let passage_1: [[Tile; 3]; 7] = [
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ]
+                    ];
+
                     let bottom_exit = RoomExit {
                         location: ExitLocation::Bottom,
                         leads_to: RoomKind::Chamber
                     };
 
                     Room {
-                        grid: TileGrid::RectangleTall3x6(passage_1),
-                        exits: Exits::Two([]),
-                        longest_dimension: u8,
-                        kind: RoomKind
+                        grid: TileGrid::RectangleTall3x7(passage_1),
+                        exits: Exits::One([bottom_exit]),
+                        longest_dimension: 30,
+                        kind: RoomKind::Passage
+                    }
+                },
+                10 => {
+                    let passage_1: [[Tile; 4]; 7] = [
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ]
+                    ];
+
+                    let bottom_exit = RoomExit {
+                        location: ExitLocation::Bottom,
+                        leads_to: RoomKind::Chamber
+                    };
+
+                    Room {
+                        grid: TileGrid::RectangleTall4x7(passage_1),
+                        exits: Exits::One([bottom_exit]),
+                        longest_dimension: 30,
+                        kind: RoomKind::Passage
+                    }
+                },
+                _ => { // This needs to be an exhaustive list of the room widths. 10 is here as a placeholder
+                    let passage_1: [[Tile; 4]; 7] = [
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ]
+                    ];
+
+                    let bottom_exit = RoomExit {
+                        location: ExitLocation::Bottom,
+                        leads_to: RoomKind::Chamber
+                    };
+
+                    Room {
+                        grid: TileGrid::RectangleTall4x7(passage_1),
+                        exits: Exits::One([bottom_exit]),
+                        longest_dimension: 30,
+                        kind: RoomKind::Passage
                     }
                 }
             }
         },
-        Orientation::Horizontal => {
+        ExitLocation::Left => {
+            match width {
+                5 => {
+                    let passage_1: [[Tile; 7]; 3] = [
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ]
+                    ];
 
+                    let left_exit = RoomExit {
+                        location: ExitLocation::Left,
+                        leads_to: RoomKind::Chamber
+                    };
+
+                    Room {
+                        grid: TileGrid::RectangleWide7x3(passage_1),
+                        exits: Exits::One([left_exit]),
+                        longest_dimension: 30,
+                        kind: RoomKind::Passage
+                    }
+                },
+                10 => {
+                    let passage_1: [[Tile; 7]; 4] = [
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ]
+                    ];
+
+                    let left_exit = RoomExit {
+                        location: ExitLocation::Left,
+                        leads_to: RoomKind::Chamber
+                    };
+
+                    Room {
+                        grid: TileGrid::RectangleWide7x4(passage_1),
+                        exits: Exits::One([left_exit]),
+                        longest_dimension: 30,
+                        kind: RoomKind::Passage
+                    }
+                },
+                _ => { // This needs to be an exhaustive list of the room widths. 10 is here as a placeholder
+                    let passage_1: [[Tile; 7]; 4] = [
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ]
+                    ];
+
+                    let left_exit = RoomExit {
+                        location: ExitLocation::Left,
+                        leads_to: RoomKind::Chamber
+                    };
+
+                    Room {
+                        grid: TileGrid::RectangleWide7x4(passage_1),
+                        exits: Exits::One([left_exit]),
+                        longest_dimension: 30,
+                        kind: RoomKind::Passage
+                    }
+                }
+            }
+        },
+        ExitLocation::Right => {
+            match width {
+                5 => {
+                    let passage_1: [[Tile; 7]; 3] = [
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ]
+                    ];
+
+                    let right_exit = RoomExit {
+                        location: ExitLocation::Right,
+                        leads_to: RoomKind::Chamber
+                    };
+
+                    Room {
+                        grid: TileGrid::RectangleWide7x3(passage_1),
+                        exits: Exits::One([right_exit]),
+                        longest_dimension: 30,
+                        kind: RoomKind::Passage
+                    }
+                },
+                10 => {
+                    let passage_1: [[Tile; 7]; 4] = [
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ]
+                    ];
+
+                    let right_exit = RoomExit {
+                        location: ExitLocation::Right,
+                        leads_to: RoomKind::Chamber
+                    };
+
+                    Room {
+                        grid: TileGrid::RectangleWide7x4(passage_1),
+                        exits: Exits::One([right_exit]),
+                        longest_dimension: 30,
+                        kind: RoomKind::Passage
+                    }
+                },
+                _ => { // This needs to be an exhaustive list of the room widths. 10 is here as a placeholder
+                    let passage_1: [[Tile; 7]; 4] = [
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor }
+                        ],
+                        [
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
+                        ]
+                    ];
+
+                    let right_exit = RoomExit {
+                        location: ExitLocation::Right,
+                        leads_to: RoomKind::Chamber
+                    };
+
+                    Room {
+                        grid: TileGrid::RectangleWide7x4(passage_1),
+                        exits: Exits::One([right_exit]),
+                        longest_dimension: 30,
+                        kind: RoomKind::Passage
+                    }
+                }
+            }
         }
     }
 }
