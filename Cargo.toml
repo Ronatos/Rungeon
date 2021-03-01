@@ -1,5 +1,5 @@
 [package]
-name = "Rungeon"
+name = "rungeon"
 version = "0.1.0"
 authors = ["Ronatos <alexander.l.perez@outlook.com>"]
 edition = "2018"
