@@ -1,3 +1,27 @@
+/*
+    Ronatos (02/28 7:30pm):
+    The big issue right now is how to handle more than one room in a map.
+    Sure, I can just generate random rooms and slap them together,
+    but that doesn't really get me anywhere.
+
+    The hope is that I can create a room,
+    easily see the connection points that room has,
+    and generate a new room that sensibly connects to it.
+
+    In that effort, I've prototyped out the addition of a passage,
+    but have run in to a number of issues that should be addressed.
+
+    Firstly, the code feels sloppy. I don't care for it.
+    Development of Tile structure, Room structure, and starting_area_1 were
+    very meticulous, and I want to feel that same way about passages.
+    Right now, they feel rushed.
+
+    Secondly, I've tacked on numerous fields in the effort of making passages work.
+    I am glad I did it, because it has given me an understanding of some of the challenges
+    involved in creating passages, but it is time to move on to a better
+    implementation.
+*/
+
 use rand::distributions::{Distribution, Standard};
 use rand::Rng;
 use std::fmt;
@@ -143,26 +167,6 @@ fn main() {
 
 
 fn generate_map() -> Map {
-
-    /*
-        Note that all maps are arranged within matrices,
-        and would normally not be accessed like a typical
-        mathematical graph. This is due to each subarray
-        being considered a "Row" instead of a "Column".
-        The pattern is as follows:
-        map[y][x]
-        (0, 0), (0, 1), (0, 2) ... (0, 5)
-        (1, 0), (1, 1), (1, 2)
-        (2, 0), (2, 1), (2, 2)
-        ...
-        (5, 0)
-
-        Only display the room the player is in.
-        - Follow the DM guide
-            a, b, c,
-            d, e, f,
-            g, h, i
-    */
 
     let starting_area = generate_starting_area();
 
