@@ -95,46 +95,16 @@ impl Grid {
     }
 }
 
-impl fmt::Display for TileGrid {
+impl fmt::Display for Grid {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        // Something along the lines of
+        // for each slice from (0..columns + 1)
+        //     print the icon
+        // then print a new line
+        // columns + columns? just a guess on this one
+
         match self {
             TileGrid::Square8x8(grid) => {
-                for row in grid {
-                    for element in row {
-                        write!(f, "{}", element)?;
-                    }
-                    write!(f, "{}", "\n");
-                }
-                write!(f, "{}", "")
-            },
-            TileGrid::RectangleTall3x7(grid) => {
-                for row in grid {
-                    for element in row {
-                        write!(f, "{}", element)?;
-                    }
-                    write!(f, "{}", "\n");
-                }
-                write!(f, "{}", "")
-            },
-            TileGrid::RectangleTall4x7(grid) => {
-                for row in grid {
-                    for element in row {
-                        write!(f, "{}", element)?;
-                    }
-                    write!(f, "{}", "\n");
-                }
-                write!(f, "{}", "")
-            },
-            TileGrid::RectangleWide7x3(grid) => {
-                for row in grid {
-                    for element in row {
-                        write!(f, "{}", element)?;
-                    }
-                    write!(f, "{}", "\n");
-                }
-                write!(f, "{}", "")
-            },
-            TileGrid::RectangleWide7x4(grid) => {
                 for row in grid {
                     for element in row {
                         write!(f, "{}", element)?;
