@@ -1,12 +1,12 @@
 use std::fmt;
 
 /// A Tile is defined as a 
-struct Tile {
+pub struct Tile {
     pub kind: TileKind,
     pub icon: Icon
 }
 
-impl Tile {
+pub impl Tile {
     pub fn new()
 }
 

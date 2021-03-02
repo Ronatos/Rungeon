@@ -1,4 +1,4 @@
-mod grid;
+// mod grid;
 
 use rand::distributions::{Distribution, Standard};
 use rand::Rng;
@@ -7,11 +7,11 @@ use std::fmt;
 // Grids ------------------------------------------------------------------------------------------
 
 enum TileGrid {
-    RectangleTall3x7([[grid::tile::Tile; 3]; 7]),
-    RectangleTall4x7([[grid::tile::Tile; 4]; 7]),
-    RectangleWide7x3([[grid::tile::Tile; 7]; 3]),
-    RectangleWide7x4([[grid::tile::Tile; 7]; 4]),
-    Square8x8([[grid::tile::Tile; 8]; 8])
+    RectangleTall3x7([[Tile; 3]; 7]),
+    RectangleTall4x7([[Tile; 4]; 7]),
+    RectangleWide7x3([[Tile; 7]; 3]),
+    RectangleWide7x4([[Tile; 7]; 4]),
+    Square8x8([[Tile; 8]; 8])
 }
 
 enum RoomGrid {
@@ -86,6 +86,42 @@ impl fmt::Display for RoomGrid {
 }
 
 // Tile - Module has been moved to grid::tile -----------------------------------------------------
+
+struct Tile {
+    kind: TileKind,
+    icon: Icon
+}
+
+// impl Tile {
+//     fn new()
+// }
+
+impl fmt::Display for Tile {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.icon)
+    }
+}
+
+enum TileKind {
+    Door,
+    Floor,
+    Stairs,
+    Wall
+}
+
+enum Icon {
+    Floor,
+    Wall
+}
+
+impl fmt::Display for Icon {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Icon::Wall => write!(f, "{} ", "#"),
+            Icon::Floor => write!(f, "{} ", " ")
+        }
+    }
+}
 
 // Room -------------------------------------------------------------------------------------------
 
@@ -264,86 +300,86 @@ fn generate_starting_area_1() -> Room {
     */
 
     // starting_area_1[column][row]
-    let mut starting_area_1: [[grid::tile::Tile; 8]; 8] = [
+    let mut starting_area_1: [[Tile; 8]; 8] = [
         [
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall }
         ],
         [
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall }
         ],
         [
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall }
         ],
         [
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall }
         ],
         [
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall }
         ],
         [
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall }
         ],
         [
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall }
         ],
         [
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+            Tile { kind: TileKind::Wall, icon: Icon::Wall }
         ]
     ];
 
@@ -406,10 +442,10 @@ fn generate_starting_area_1() -> Room {
         let coordinate_top: (usize, usize) = (coordinate_bottom.0, 0);
 
         // starting_area_1[row][column]
-        starting_area_1[coordinate_top.1][coordinate_top.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_top.1][coordinate_top.0].icon = grid::tile::Icon::Floor;
-        starting_area_1[coordinate_bottom.1][coordinate_bottom.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_bottom.1][coordinate_bottom.0].icon = grid::tile::Icon::Floor;
+        starting_area_1[coordinate_top.1][coordinate_top.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_top.1][coordinate_top.0].icon = Icon::Floor;
+        starting_area_1[coordinate_bottom.1][coordinate_bottom.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_bottom.1][coordinate_bottom.0].icon = Icon::Floor;
     }
     else { // This will be a 10ft wide passage
         // (column, row)
@@ -419,14 +455,14 @@ fn generate_starting_area_1() -> Room {
         let coordinate_top_right: (usize, usize) = (coordinate_bottom_left.0 + 1, 0);
 
         // starting_area_1[row][column]
-        starting_area_1[coordinate_top_left.1][coordinate_top_left.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_top_left.1][coordinate_top_left.0].icon = grid::tile::Icon::Floor;
-        starting_area_1[coordinate_top_right.1][coordinate_top_right.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_top_right.1][coordinate_top_right.0].icon = grid::tile::Icon::Floor;
-        starting_area_1[coordinate_bottom_left.1][coordinate_bottom_left.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_bottom_left.1][coordinate_bottom_left.0].icon = grid::tile::Icon::Floor;
-        starting_area_1[coordinate_bottom_right.1][coordinate_bottom_right.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_bottom_right.1][coordinate_bottom_right.0].icon = grid::tile::Icon::Floor;
+        starting_area_1[coordinate_top_left.1][coordinate_top_left.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_top_left.1][coordinate_top_left.0].icon = Icon::Floor;
+        starting_area_1[coordinate_top_right.1][coordinate_top_right.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_top_right.1][coordinate_top_right.0].icon = Icon::Floor;
+        starting_area_1[coordinate_bottom_left.1][coordinate_bottom_left.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_bottom_left.1][coordinate_bottom_left.0].icon = Icon::Floor;
+        starting_area_1[coordinate_bottom_right.1][coordinate_bottom_right.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_bottom_right.1][coordinate_bottom_right.0].icon = Icon::Floor;
     }
 
     // Bottom passage
@@ -436,10 +472,10 @@ fn generate_starting_area_1() -> Room {
         let coordinate_top: (usize, usize) = (coordinate_bottom.0, 6);
 
         // starting_area_1[row][column]
-        starting_area_1[coordinate_top.1][coordinate_top.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_top.1][coordinate_top.0].icon = grid::tile::Icon::Floor;
-        starting_area_1[coordinate_bottom.1][coordinate_bottom.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_bottom.1][coordinate_bottom.0].icon = grid::tile::Icon::Floor;
+        starting_area_1[coordinate_top.1][coordinate_top.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_top.1][coordinate_top.0].icon = Icon::Floor;
+        starting_area_1[coordinate_bottom.1][coordinate_bottom.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_bottom.1][coordinate_bottom.0].icon = Icon::Floor;
     }
     else { // This will be a 10ft wide passage
         // (column, row)
@@ -449,14 +485,14 @@ fn generate_starting_area_1() -> Room {
         let coordinate_top_right: (usize, usize) = (coordinate_bottom_left.0 + 1, 6);
 
         // starting_area_1[row][column]
-        starting_area_1[coordinate_top_left.1][coordinate_top_left.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_top_left.1][coordinate_top_left.0].icon = grid::tile::Icon::Floor;
-        starting_area_1[coordinate_top_right.1][coordinate_top_right.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_top_right.1][coordinate_top_right.0].icon = grid::tile::Icon::Floor;
-        starting_area_1[coordinate_bottom_left.1][coordinate_bottom_left.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_bottom_left.1][coordinate_bottom_left.0].icon = grid::tile::Icon::Floor;
-        starting_area_1[coordinate_bottom_right.1][coordinate_bottom_right.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_bottom_right.1][coordinate_bottom_right.0].icon = grid::tile::Icon::Floor;
+        starting_area_1[coordinate_top_left.1][coordinate_top_left.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_top_left.1][coordinate_top_left.0].icon = Icon::Floor;
+        starting_area_1[coordinate_top_right.1][coordinate_top_right.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_top_right.1][coordinate_top_right.0].icon = Icon::Floor;
+        starting_area_1[coordinate_bottom_left.1][coordinate_bottom_left.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_bottom_left.1][coordinate_bottom_left.0].icon = Icon::Floor;
+        starting_area_1[coordinate_bottom_right.1][coordinate_bottom_right.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_bottom_right.1][coordinate_bottom_right.0].icon = Icon::Floor;
     }
 
     // Left passage
@@ -466,10 +502,10 @@ fn generate_starting_area_1() -> Room {
         let coordinate_left: (usize, usize) = (0, coordinate_right.1);
 
         // starting_area_1[row][column]
-        starting_area_1[coordinate_left.1][coordinate_left.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_left.1][coordinate_left.0].icon = grid::tile::Icon::Floor;
-        starting_area_1[coordinate_right.1][coordinate_right.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_right.1][coordinate_right.0].icon = grid::tile::Icon::Floor;
+        starting_area_1[coordinate_left.1][coordinate_left.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_left.1][coordinate_left.0].icon = Icon::Floor;
+        starting_area_1[coordinate_right.1][coordinate_right.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_right.1][coordinate_right.0].icon = Icon::Floor;
     }
     else { // This will be a 10ft wide passage
         // (column, row)
@@ -479,14 +515,14 @@ fn generate_starting_area_1() -> Room {
         let coordinate_top_right: (usize, usize) = (1, coordinate_bottom_right.1 - 1);
 
         // starting_area_1[row][column]
-        starting_area_1[coordinate_top_left.1][coordinate_top_left.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_top_left.1][coordinate_top_left.0].icon = grid::tile::Icon::Floor;
-        starting_area_1[coordinate_top_right.1][coordinate_top_right.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_top_right.1][coordinate_top_right.0].icon = grid::tile::Icon::Floor;
-        starting_area_1[coordinate_bottom_left.1][coordinate_bottom_left.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_bottom_left.1][coordinate_bottom_left.0].icon = grid::tile::Icon::Floor;
-        starting_area_1[coordinate_bottom_right.1][coordinate_bottom_right.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_bottom_right.1][coordinate_bottom_right.0].icon = grid::tile::Icon::Floor;
+        starting_area_1[coordinate_top_left.1][coordinate_top_left.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_top_left.1][coordinate_top_left.0].icon = Icon::Floor;
+        starting_area_1[coordinate_top_right.1][coordinate_top_right.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_top_right.1][coordinate_top_right.0].icon = Icon::Floor;
+        starting_area_1[coordinate_bottom_left.1][coordinate_bottom_left.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_bottom_left.1][coordinate_bottom_left.0].icon = Icon::Floor;
+        starting_area_1[coordinate_bottom_right.1][coordinate_bottom_right.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_bottom_right.1][coordinate_bottom_right.0].icon = Icon::Floor;
     }
 
     // Right passage
@@ -496,10 +532,10 @@ fn generate_starting_area_1() -> Room {
         let coordinate_left: (usize, usize) = (6, coordinate_right.1);
 
         // starting_area_1[row][column]
-        starting_area_1[coordinate_left.1][coordinate_left.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_left.1][coordinate_left.0].icon = grid::tile::Icon::Floor;
-        starting_area_1[coordinate_right.1][coordinate_right.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_right.1][coordinate_right.0].icon = grid::tile::Icon::Floor;
+        starting_area_1[coordinate_left.1][coordinate_left.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_left.1][coordinate_left.0].icon = Icon::Floor;
+        starting_area_1[coordinate_right.1][coordinate_right.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_right.1][coordinate_right.0].icon = Icon::Floor;
     }
     else { // This will be a 10ft wide passage
         // (column, row)
@@ -509,14 +545,14 @@ fn generate_starting_area_1() -> Room {
         let coordinate_top_right: (usize, usize) = (7, coordinate_bottom_right.1 - 1);
 
         // starting_area_1[row][column]
-        starting_area_1[coordinate_top_left.1][coordinate_top_left.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_top_left.1][coordinate_top_left.0].icon = grid::tile::Icon::Floor;
-        starting_area_1[coordinate_top_right.1][coordinate_top_right.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_top_right.1][coordinate_top_right.0].icon = grid::tile::Icon::Floor;
-        starting_area_1[coordinate_bottom_left.1][coordinate_bottom_left.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_bottom_left.1][coordinate_bottom_left.0].icon = grid::tile::Icon::Floor;
-        starting_area_1[coordinate_bottom_right.1][coordinate_bottom_right.0].kind = grid::tile::TileKind::Floor;
-        starting_area_1[coordinate_bottom_right.1][coordinate_bottom_right.0].icon = grid::tile::Icon::Floor;
+        starting_area_1[coordinate_top_left.1][coordinate_top_left.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_top_left.1][coordinate_top_left.0].icon = Icon::Floor;
+        starting_area_1[coordinate_top_right.1][coordinate_top_right.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_top_right.1][coordinate_top_right.0].icon = Icon::Floor;
+        starting_area_1[coordinate_bottom_left.1][coordinate_bottom_left.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_bottom_left.1][coordinate_bottom_left.0].icon = Icon::Floor;
+        starting_area_1[coordinate_bottom_right.1][coordinate_bottom_right.0].kind = TileKind::Floor;
+        starting_area_1[coordinate_bottom_right.1][coordinate_bottom_right.0].icon = Icon::Floor;
     }
 
     Room {
@@ -699,41 +735,41 @@ fn generate_passage_1(entrance_location: ExitLocation, width: u8) -> Room {
         ExitLocation::Top => {
             match width {
                 5 => {
-                    let passage_1: [[grid::tile::Tile; 3]; 7] = [
+                    let passage_1: [[Tile; 3]; 7] = [
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ]
                     ];
 
@@ -750,48 +786,48 @@ fn generate_passage_1(entrance_location: ExitLocation, width: u8) -> Room {
                     }
                 },
                 10 => {
-                    let passage_1: [[grid::tile::Tile; 4]; 7] = [
+                    let passage_1: [[Tile; 4]; 7] = [
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ]
                     ];
 
@@ -808,48 +844,48 @@ fn generate_passage_1(entrance_location: ExitLocation, width: u8) -> Room {
                     }
                 },
                 _ => { // This needs to be an exhaustive list of the room widths. 10 is here as a placeholder
-                    let passage_1: [[grid::tile::Tile; 4]; 7] = [
+                    let passage_1: [[Tile; 4]; 7] = [
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ]
                     ];
 
@@ -870,41 +906,41 @@ fn generate_passage_1(entrance_location: ExitLocation, width: u8) -> Room {
         ExitLocation::Bottom => {
             match width {
                 5 => {
-                    let passage_1: [[grid::tile::Tile; 3]; 7] = [
+                    let passage_1: [[Tile; 3]; 7] = [
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ]
                     ];
 
@@ -921,48 +957,48 @@ fn generate_passage_1(entrance_location: ExitLocation, width: u8) -> Room {
                     }
                 },
                 10 => {
-                    let passage_1: [[grid::tile::Tile; 4]; 7] = [
+                    let passage_1: [[Tile; 4]; 7] = [
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ]
                     ];
 
@@ -979,48 +1015,48 @@ fn generate_passage_1(entrance_location: ExitLocation, width: u8) -> Room {
                     }
                 },
                 _ => { // This needs to be an exhaustive list of the room widths. 10 is here as a placeholder
-                    let passage_1: [[grid::tile::Tile; 4]; 7] = [
+                    let passage_1: [[Tile; 4]; 7] = [
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ]
                     ];
 
@@ -1041,33 +1077,33 @@ fn generate_passage_1(entrance_location: ExitLocation, width: u8) -> Room {
         ExitLocation::Left => {
             match width {
                 5 => {
-                    let passage_1: [[grid::tile::Tile; 7]; 3] = [
+                    let passage_1: [[Tile; 7]; 3] = [
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ]
                     ];
 
@@ -1084,42 +1120,42 @@ fn generate_passage_1(entrance_location: ExitLocation, width: u8) -> Room {
                     }
                 },
                 10 => {
-                    let passage_1: [[grid::tile::Tile; 7]; 4] = [
+                    let passage_1: [[Tile; 7]; 4] = [
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ]
                     ];
 
@@ -1136,42 +1172,42 @@ fn generate_passage_1(entrance_location: ExitLocation, width: u8) -> Room {
                     }
                 },
                 _ => { // This needs to be an exhaustive list of the room widths. 10 is here as a placeholder
-                    let passage_1: [[grid::tile::Tile; 7]; 4] = [
+                    let passage_1: [[Tile; 7]; 4] = [
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ]
                     ];
 
@@ -1192,33 +1228,33 @@ fn generate_passage_1(entrance_location: ExitLocation, width: u8) -> Room {
         ExitLocation::Right => {
             match width {
                 5 => {
-                    let passage_1: [[grid::tile::Tile; 7]; 3] = [
+                    let passage_1: [[Tile; 7]; 3] = [
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ]
                     ];
 
@@ -1235,42 +1271,42 @@ fn generate_passage_1(entrance_location: ExitLocation, width: u8) -> Room {
                     }
                 },
                 10 => {
-                    let passage_1: [[grid::tile::Tile; 7]; 4] = [
+                    let passage_1: [[Tile; 7]; 4] = [
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ]
                     ];
 
@@ -1287,42 +1323,42 @@ fn generate_passage_1(entrance_location: ExitLocation, width: u8) -> Room {
                     }
                 },
                 _ => { // This needs to be an exhaustive list of the room widths. 10 is here as a placeholder
-                    let passage_1: [[grid::tile::Tile; 7]; 4] = [
+                    let passage_1: [[Tile; 7]; 4] = [
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Floor, icon: grid::tile::Icon::Floor }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor },
+                            Tile { kind: TileKind::Floor, icon: Icon::Floor }
                         ],
                         [
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall },
-                            grid::tile::Tile { kind: grid::tile::TileKind::Wall, icon: grid::tile::Icon::Wall }
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall },
+                            Tile { kind: TileKind::Wall, icon: Icon::Wall }
                         ]
                     ];
 
