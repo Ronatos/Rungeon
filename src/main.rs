@@ -1,127 +1,10 @@
-// mod grid;
+mod grid;
+
+use grid::tile as tile;
 
 use rand::distributions::{Distribution, Standard};
 use rand::Rng;
 use std::fmt;
-
-// Grids ------------------------------------------------------------------------------------------
-
-enum TileGrid {
-    RectangleTall3x7([[Tile; 3]; 7]),
-    RectangleTall4x7([[Tile; 4]; 7]),
-    RectangleWide7x3([[Tile; 7]; 3]),
-    RectangleWide7x4([[Tile; 7]; 4]),
-    Square8x8([[Tile; 8]; 8])
-}
-
-enum RoomGrid {
-    Square3x3([[Room; 3]; 3])
-}
-
-impl fmt::Display for TileGrid {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            TileGrid::Square8x8(grid) => {
-                for row in grid {
-                    for element in row {
-                        write!(f, "{}", element)?;
-                    }
-                    write!(f, "{}", "\n");
-                }
-                write!(f, "{}", "")
-            },
-            TileGrid::RectangleTall3x7(grid) => {
-                for row in grid {
-                    for element in row {
-                        write!(f, "{}", element)?;
-                    }
-                    write!(f, "{}", "\n");
-                }
-                write!(f, "{}", "")
-            },
-            TileGrid::RectangleTall4x7(grid) => {
-                for row in grid {
-                    for element in row {
-                        write!(f, "{}", element)?;
-                    }
-                    write!(f, "{}", "\n");
-                }
-                write!(f, "{}", "")
-            },
-            TileGrid::RectangleWide7x3(grid) => {
-                for row in grid {
-                    for element in row {
-                        write!(f, "{}", element)?;
-                    }
-                    write!(f, "{}", "\n");
-                }
-                write!(f, "{}", "")
-            },
-            TileGrid::RectangleWide7x4(grid) => {
-                for row in grid {
-                    for element in row {
-                        write!(f, "{}", element)?;
-                    }
-                    write!(f, "{}", "\n");
-                }
-                write!(f, "{}", "")
-            }
-        }
-    }
-}
-
-impl fmt::Display for RoomGrid {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            RoomGrid::Square3x3(grid) => {
-                for row in grid {
-                    for element in row {
-                        write!(f, "{}---------------\n", element)?;
-                    }
-                }
-                write!(f, "{}", "")
-            }
-        }
-    }
-}
-
-// Tile - Module has been moved to grid::tile -----------------------------------------------------
-
-struct Tile {
-    kind: TileKind,
-    icon: Icon
-}
-
-// impl Tile {
-//     fn new()
-// }
-
-impl fmt::Display for Tile {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.icon)
-    }
-}
-
-enum TileKind {
-    Door,
-    Floor,
-    Stairs,
-    Wall
-}
-
-enum Icon {
-    Floor,
-    Wall
-}
-
-impl fmt::Display for Icon {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Icon::Wall => write!(f, "{} ", "#"),
-            Icon::Floor => write!(f, "{} ", " ")
-        }
-    }
-}
 
 // Room -------------------------------------------------------------------------------------------
 
@@ -178,79 +61,81 @@ impl fmt::Display for Map {
 }
 
 fn main() {
-    println!("{}", generate_map());
+    println!("{}", generate_starting_area_1());
 }
 
 
-fn generate_map() -> Map {
+// fn generate_map() -> Map {
 
-    let starting_area = generate_starting_area();
-    let passage_top = generate_passage_from(&starting_area, ExitLocation::Bottom);
+//     let starting_area = generate_starting_area();
+//     let passage_top = generate_passage_from(&starting_area, ExitLocation::Bottom);
 
-    // The problem here is that the only reason I know these passages are in order
-    // top, bottom, left, right
-    // is because that's the order I added them in to the starting_area structure,
-    // not because there's any data saying so.
-    // Definitely a problem.
-    // let mut passages: Vec<Room> = Vec::new();
-    // match starting_area.exits {
-    //     Exits::One(room_exits) => {
-    //         for exit in room_exits.iter() {
-    //             passages.push(generate_passage_from(starting_area, exit.location));
-    //         }
-    //     },
-    //     Exits::Two(room_exits) => {
-    //         for (i, exit) in room_exits.iter().enumerate() {
-    //             passages.push(generate_passage_from(starting_area, exit.location));
-    //         }
-    //     },
-    //     Exits::Three(room_exits) => {
-    //         for (i, exit) in room_exits.iter().enumerate() {
-    //             passages.push(generate_passage_from(starting_area, exit.location));
-    //         }
-    //     },
-    //     Exits::Four(room_exits) => {
-    //         for (i, exit) in room_exits.iter().enumerate() {
-    //             passages.push(generate_passage_from(starting_area, exit.location));
-    //         }
-    //     },
-    //     Exits::Five(room_exits) => {
-    //         for (i, exit) in room_exits.iter().enumerate() {
-    //             passages.push(generate_passage_from(starting_area, exit.location));
-    //         }
-    //     },
-    //     Exits::Six(room_exits) => {
-    //         for (i, exit) in room_exits.iter().enumerate() {
-    //             passages.push(generate_passage_from(starting_area, exit.location));
-    //         }
-    //     }
-    // }
+//     // The problem here is that the only reason I know these passages are in order
+//     // top, bottom, left, right
+//     // is because that's the order I added them in to the starting_area structure,
+//     // not because there's any data saying so.
+//     // Definitely a problem.
+//     // let mut passages: Vec<Room> = Vec::new();
+//     // match starting_area.exits {
+//     //     Exits::One(room_exits) => {
+//     //         for exit in room_exits.iter() {
+//     //             passages.push(generate_passage_from(starting_area, exit.location));
+//     //         }
+//     //     },
+//     //     Exits::Two(room_exits) => {
+//     //         for (i, exit) in room_exits.iter().enumerate() {
+//     //             passages.push(generate_passage_from(starting_area, exit.location));
+//     //         }
+//     //     },
+//     //     Exits::Three(room_exits) => {
+//     //         for (i, exit) in room_exits.iter().enumerate() {
+//     //             passages.push(generate_passage_from(starting_area, exit.location));
+//     //         }
+//     //     },
+//     //     Exits::Four(room_exits) => {
+//     //         for (i, exit) in room_exits.iter().enumerate() {
+//     //             passages.push(generate_passage_from(starting_area, exit.location));
+//     //         }
+//     //     },
+//     //     Exits::Five(room_exits) => {
+//     //         for (i, exit) in room_exits.iter().enumerate() {
+//     //             passages.push(generate_passage_from(starting_area, exit.location));
+//     //         }
+//     //     },
+//     //     Exits::Six(room_exits) => {
+//     //         for (i, exit) in room_exits.iter().enumerate() {
+//     //             passages.push(generate_passage_from(starting_area, exit.location));
+//     //         }
+//     //     }
+//     // }
 
-    // map[column][row]
-    let mut map: [[Room; 3]; 3] = [
-        [
-            generate_starting_area(),
-            passage_top,
-            generate_starting_area()
-        ],
-        [
-            generate_starting_area(),
-            starting_area,
-            generate_starting_area()
-        ],
-        [
-            generate_starting_area(),
-            generate_starting_area(),
-            generate_starting_area()
-        ]
-    ];
+//     // map[column][row]
+//     let mut map: [[Room; 3]; 3] = [
+//         [
+//             generate_starting_area(),
+//             passage_top,
+//             generate_starting_area()
+//         ],
+//         [
+//             generate_starting_area(),
+//             starting_area,
+//             generate_starting_area()
+//         ],
+//         [
+//             generate_starting_area(),
+//             generate_starting_area(),
+//             generate_starting_area()
+//         ]
+//     ];
 
-    Map {
-        grid: RoomGrid::Square3x3(map)
-    }
-}
+//     Map {
+//         grid: RoomGrid::Square3x3(map)
+//     }
+// }
 
-fn generate_starting_area() -> Room {
+// So what if this generated the map, and each starting_area function
+// recursively built out the map and returned it
+fn generate_starting_area() -> grid::Grid {
 
     let mut rng = rand::thread_rng();
     // let starting_area = rng.gen_range(1..11);
@@ -271,7 +156,7 @@ fn generate_starting_area() -> Room {
     }
 }
 
-fn generate_starting_area_1() -> Room {
+fn generate_starting_area_1() -> grid::Grid {
     /*
         Starting Area 1
 
@@ -299,89 +184,32 @@ fn generate_starting_area_1() -> Room {
         # # #   # # # #
     */
 
-    // starting_area_1[column][row]
-    let mut starting_area_1: [[Tile; 8]; 8] = [
-        [
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall }
-        ],
-        [
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall }
-        ],
-        [
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Floor, icon: Icon::Floor },
-            Tile { kind: TileKind::Floor, icon: Icon::Floor },
-            Tile { kind: TileKind::Floor, icon: Icon::Floor },
-            Tile { kind: TileKind::Floor, icon: Icon::Floor },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall }
-        ],
-        [
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Floor, icon: Icon::Floor },
-            Tile { kind: TileKind::Floor, icon: Icon::Floor },
-            Tile { kind: TileKind::Floor, icon: Icon::Floor },
-            Tile { kind: TileKind::Floor, icon: Icon::Floor },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall }
-        ],
-        [
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Floor, icon: Icon::Floor },
-            Tile { kind: TileKind::Floor, icon: Icon::Floor },
-            Tile { kind: TileKind::Floor, icon: Icon::Floor },
-            Tile { kind: TileKind::Floor, icon: Icon::Floor },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall }
-        ],
-        [
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Floor, icon: Icon::Floor },
-            Tile { kind: TileKind::Floor, icon: Icon::Floor },
-            Tile { kind: TileKind::Floor, icon: Icon::Floor },
-            Tile { kind: TileKind::Floor, icon: Icon::Floor },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall }
-        ],
-        [
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall }
-        ],
-        [
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall },
-            Tile { kind: TileKind::Wall, icon: Icon::Wall }
-        ]
-    ];
+    let num_columns = 8;
+    let tiles_in_grid = 0;
+    let mut room: Vec<grid::Module> = Vec::new();
+    while tiles_in_grid <= 64 {
+        if tiles_in_grid < num_columns * 2 // First 2 rows
+        || tiles_in_grid > num_columns * 6 // Last 2 rows
+        || tiles_in_grid % 8 // 1st column
+        || (tiles_in_grid - 1) % 8 // 2nd column
+        || (tiles_in_grid + 1) % 8 // 8th column
+        || (tiles_in_grid + 2) % 8 { // 7th column
+            room.push(grid::Module::Tile(
+                tile::Tile {
+                    kind: tile::TileKind::Wall,
+                    icon: tile::Icon::Wall
+                }
+            ))
+        }
+        
+        room.push(grid::Module::Tile(
+            tile::Tile {
+                kind: tile::TileKind::Floor,
+                icon: tile::Icon::Floor
+            }
+        ));
+        tiles_in_grid = tiles_in_grid + 1;
+    }
 
     impl Distribution<ExitLocation> for Standard {
         fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> ExitLocation {
@@ -395,8 +223,74 @@ fn generate_starting_area_1() -> Room {
         }
     }
 
+    // Recursively generate rooms based on exits
+    // The map knows which indexes are filled and which aren't
+    // because it passes a hash map in to the plant_room_seed()
+    // function. This hash map relates unfilled indexes with
+    // rooms as they are recursively generated.
+
+    // hash_map = {
+    //     0: Empty,
+    //     1: Empty,
+    //     2: Empty,
+    //     3: Empty,
+    //     4: Empty,
+    //     5: Empty,
+    //     6: Empty,
+    //     7: Empty,
+    //     8: Empty
+    //   };
+      
+    //   map = // looks like this
+    //   0 | 1 | 2
+    //   - + - + -
+    //   3 | 4 | 5
+    //   - + - + -
+    //   6 | 7 | 8
+      
+    //   starting_entrance_location = bottom // can be random, but needs to initially match up with the dungeon logically. you wouldn't start the dungeon from index 8 with an entrance from the north
+      
+    //   starting_room_index = 7 // this could again be random, as long as it matched up with the starting_entrance_location
+      
+    //   plant_room_generation_seed(hash_map, starting_entrance_location, starting_room_index);
+      
+    //   plant_room_generation(hash_map, entrance_location, hash_key) {
+    //     if (hash_map.hash_key is full || hash_key doesn't exist) {
+    //       stop all the recursion!;
+    //     }
+      
+    //     R = Room {
+    //       tiles tiles tiles,
+    //       exits: [randomly placed exits]
+    //     };
+    //     hash_map(hash_key: R);
+    //     for each exit in R:
+    //       if exit.location == top {
+    //         plant_room_generation(hash_map, bottom, current_hash_key - 3);
+    //       }
+    //       else if exit.location == bottom {
+    //         plant_room_generation(hash_map, top, current_hash_key + 3);
+    //       }
+    //       else if exit.location == left && current_hash_key % 3 != 0  {
+    //         plant_room_generation(hash_map, right, current_hash_key - 1);
+    //       }
+    //       else if exit.location == left && current_hash_key % 3 == 0 {
+    //         stop the recursion! // we hit a wall at 3 or 6
+    //       else if exit.location == right && (current_hash_key - 2) % 3 != 0  {
+    //         plant_room_generation(hash_map, right, current_hash_key + 1);
+    //       }
+    //       else if exit.location == right && (current_hash_key - 2) % 3 == 0 {
+    //         stop the recursion! // we hit a wall at 2 or 5
+    //       else {
+    //         stop the recursion? // isn't this every case?
+    //       }
+    //     }
+    //   }
+
     let mut rng = rand::thread_rng();
     let entrance_location: ExitLocation = rng.gen();
+
+    let 
 
     let exit_top = RoomExit {
         location: ExitLocation::Top,

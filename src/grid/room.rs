@@ -1,3 +1,19 @@
+use std::fmt;
+
+struct NewRoom {
+    grid: // the grid, obviously
+    exits: // a list of all exits
+}
+
+enum ExitLocation {
+    Top,
+    Bottom,
+    Left,
+    Right
+}
+
+// ------------------------------------------------------------------------------------------------
+
 struct Room {
     grid: TileGrid,
     exits: Exits,
