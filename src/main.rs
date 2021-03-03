@@ -277,7 +277,7 @@ fn generate_starting_area_1() -> grid::Grid {
     //       else if exit.location == left && current_hash_key % 3 == 0 {
     //         stop the recursion! // we hit a wall at 3 or 6
     //       else if exit.location == right && (current_hash_key - 2) % 3 != 0  {
-    //         plant_room_generation(hash_map, right, current_hash_key + 1);
+    //         plant_room_generation(hash_map, left, current_hash_key + 1);
     //       }
     //       else if exit.location == right && (current_hash_key - 2) % 3 == 0 {
     //         stop the recursion! // we hit a wall at 2 or 5
