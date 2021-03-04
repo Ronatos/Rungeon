@@ -1,7 +1,6 @@
 pub mod room;
 pub mod tile;
 
-use crate::grid::{room, tile};
 use std::fmt;
 
 /// A Grid is a 1-dimensional vector of modules, which may be Rooms or Tiles.
