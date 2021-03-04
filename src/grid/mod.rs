@@ -2,6 +2,7 @@ pub mod room;
 pub mod tile;
 
 use crate::grid::{room, tile};
+use std::fmt;
 
 /// A Grid is a 1-dimensional vector of modules, which may be Rooms or Tiles.
 /// It is used to describe a room made up of tiles, or a map made up of rooms,
@@ -102,12 +103,12 @@ impl Grid {
 impl fmt::Display for Grid {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         for (i, module) in self.modules.iter().enumerate() {
-            if (i + 1) % self.columns {
+            if (i + 1) % self.columns == 0 {
                 write!(f, "{}", "\n")?;
             }
             write!(f, "{}", module)?;
         }
-        Ok()
+        write!(f, "{}", "")
     }
 }
 

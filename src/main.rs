@@ -5,6 +5,7 @@ use grid::tile as tile;
 use rand::distributions::{Distribution, Standard};
 use rand::Rng;
 use std::fmt;
+use std::collections::HashMap;
 
 // Room -------------------------------------------------------------------------------------------
 
@@ -38,8 +39,8 @@ enum ExitLocation {
 
 enum RoomKind {
     Chamber,
-    Entrance,
-    Passage
+    Passage,
+    StartingArea
 }
 
 impl fmt::Display for Room {
@@ -156,6 +157,51 @@ fn generate_starting_area() -> grid::Grid {
     }
 }
 
+fn generate_map_recursively(hash_map: HashMap, entrance_location: ExitLocation, room_index: usize, room_kind: RoomKind) -> HashMap {
+    if room_index < 0 || room_index > 8 || hash_map.get(room_index) == Some(Room) {
+        return hash_map
+    }
+
+    let room = match room_kind {
+        RoomKind::Chamber => generate_chamber(entrance_location),
+        RoomKind::Passage => generate_passage(entrance_location),
+        RoomKind::StartingArea => generate_starting_area(entrance_location)
+    };
+
+    hash_map.insert(room_index, room);
+        //     if (hash_map.hash_key is full || hash_key doesn't exist) {
+        //       stop all the recursion!;
+        //     }
+          
+        //     R = Room {
+        //       tiles tiles tiles,
+        //       exits: [randomly placed exits]
+        //     };
+        //     hash_map(hash_key: R);
+        //     for each exit in R:
+        //       if exit.location == top {
+        //         plant_room_generation(hash_map, bottom, current_hash_key - 3);
+        //       }
+        //       else if exit.location == bottom {
+        //         plant_room_generation(hash_map, top, current_hash_key + 3);
+        //       }
+        //       else if exit.location == left && current_hash_key % 3 != 0  {
+        //         plant_room_generation(hash_map, right, current_hash_key - 1);
+        //       }
+        //       else if exit.location == left && current_hash_key % 3 == 0 {
+        //         stop the recursion! // we hit a wall at 3 or 6
+        //       else if exit.location == right && (current_hash_key - 2) % 3 != 0  {
+        //         plant_room_generation(hash_map, left, current_hash_key + 1);
+        //       }
+        //       else if exit.location == right && (current_hash_key - 2) % 3 == 0 {
+        //         stop the recursion! // we hit a wall at 2 or 5
+        //       else {
+        //         stop the recursion? // isn't this every case?
+        //       }
+        //     }
+        //   }
+}
+
 fn generate_starting_area_1() -> grid::Grid {
     /*
         Starting Area 1
@@ -223,6 +269,21 @@ fn generate_starting_area_1() -> grid::Grid {
         }
     }
 
+    let mut rng = rand::thread_rng();
+    let entrance_location = rng.gen_range(0..=9);
+    let entrance_direction: ExitLocation = rng.gen();
+
+    let mut hash_map: HashMap<usize, Option<Room, None>> = HashMap::new();
+    hash_map.insert(0, None);
+    hash_map.insert(1, None);
+    hash_map.insert(2, None);
+    hash_map.insert(3, None);
+    hash_map.insert(4, None);
+    hash_map.insert(5, None);
+    hash_map.insert(6, None);
+    hash_map.insert(7, None);
+    hash_map.insert(8, None);
+
     // Recursively generate rooms based on exits
     // The map knows which indexes are filled and which aren't
     // because it passes a hash map in to the plant_room_seed()
@@ -248,9 +309,9 @@ fn generate_starting_area_1() -> grid::Grid {
     //   - + - + -
     //   6 | 7 | 8
       
-    //   starting_entrance_location = bottom // can be random, but needs to initially match up with the dungeon logically. you wouldn't start the dungeon from index 8 with an entrance from the north
+    //   starting_entrance_location = bottom // can be random
       
-    //   starting_room_index = 7 // this could again be random, as long as it matched up with the starting_entrance_location
+    //   starting_room_index = 7 // this could again be random
       
     //   plant_room_generation_seed(hash_map, starting_entrance_location, starting_room_index);
       
@@ -286,11 +347,6 @@ fn generate_starting_area_1() -> grid::Grid {
     //       }
     //     }
     //   }
-
-    let mut rng = rand::thread_rng();
-    let entrance_location: ExitLocation = rng.gen();
-
-    let 
 
     let exit_top = RoomExit {
         location: ExitLocation::Top,
