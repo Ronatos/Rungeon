@@ -1,5 +1,5 @@
-mod container;
-mod tile;
+pub mod container;
+pub mod tile;
 use std::fmt;
 
 /// A Grid is a 1-dimensional vector of Nodes, which may be Containers (of one or more nested grids) or Tiles.
@@ -38,7 +38,7 @@ use std::fmt;
 /// d e f
 /// g h i
 /// ```
-struct Grid {
+pub struct Grid {
     columns: usize,
     nodes: Vec<Node>
 }
