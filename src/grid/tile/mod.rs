@@ -33,30 +33,50 @@ use std::fmt;
 /// \#
 pub struct Tile {
     pub kind: TileKind,
-    pub icon: Icon
+    pub icon: TileIcon
 }
 
+/// The Display function tells std::fmt how to display a tile on the screen.
+/// Tiles must be "displayable" because the Grid Display method relies on displaying Modules,
+/// which are in turn eventually made of tiles at the most basic level. Tile icons are displayed.
 impl fmt::Display for Tile {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.icon)
     }
 }
 
+/// An enum specifying what kind of Tile is being referenced. This is considered the true
+/// nature of the tile, despite what it may appear to be.
+/// 
+/// # Variants
+/// 
+/// * `Floor` - This is used to specify that a tile is a floor tile.
+/// * `Wall` - This is used to specify that a tile is a wall tile.
 pub enum TileKind {
     Floor,
     Wall
 }
 
-pub enum Icon {
+/// An enum specifying the type of icon that should be displayed when a tile is displayed.
+/// This is what is displayed on the screen, despite what it may actually be.
+/// 
+/// # Variants
+/// 
+/// * `Floor` - An empty space. " "
+/// * `Wall` - A number sign. "#"
+pub enum TileIcon {
     Floor,
     Wall
 }
 
-impl fmt::Display for Icon {
+/// The Display function tells std::fmt how to display a tile on the screen.
+/// This is where the TileIcon variant is decoded to reveal what the icon actually looks like.
+/// The recursive Display tree always terminates branches at this function.
+impl fmt::Display for TileIcon {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Icon::Wall => write!(f, "{} ", "#"),
-            Icon::Floor => write!(f, "{} ", " ")
+            TileIcon::Wall => write!(f, "{} ", "#"),
+            TileIcon::Floor => write!(f, "{} ", " ")
         }
     }
 }
