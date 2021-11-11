@@ -37,8 +37,8 @@ pub struct Tile {
 }
 
 /// The Display function tells std::fmt how to display a tile on the screen.
-/// Tiles must be "displayable" because the Grid Display method relies on displaying Modules,
-/// which are in turn eventually made of tiles at the most basic level. Tile icons are displayed.
+/// Tiles must be "displayable" because the Grid Display methods rely on displaying Tiles,
+/// Tile icons are displayed.
 impl fmt::Display for Tile {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.icon)
@@ -71,7 +71,6 @@ pub enum TileIcon {
 
 /// The Display function tells std::fmt how to display a tile on the screen.
 /// This is where the TileIcon variant is decoded to reveal what the icon actually looks like.
-/// The recursive Display tree always terminates branches at this function.
 impl fmt::Display for TileIcon {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
