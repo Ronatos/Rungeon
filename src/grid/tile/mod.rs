@@ -31,6 +31,7 @@ use std::fmt;
 /// ### Output
 /// 
 /// \#
+#[derive(Copy, Clone)]
 pub struct Tile {
     pub kind: TileKind,
     pub icon: TileIcon
@@ -52,6 +53,7 @@ impl fmt::Display for Tile {
 /// 
 /// * `Floor` - This is used to specify that a tile is a floor tile.
 /// * `Wall` - This is used to specify that a tile is a wall tile.
+#[derive(Copy, Clone)]
 pub enum TileKind {
     Floor,
     Wall
@@ -64,6 +66,7 @@ pub enum TileKind {
 /// 
 /// * `Floor` - An empty space. " "
 /// * `Wall` - A number sign. "#"
+#[derive(Copy, Clone)]
 pub enum TileIcon {
     Floor,
     Wall

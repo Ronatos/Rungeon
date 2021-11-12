@@ -1,6 +1,7 @@
 use crate::grid;
 use std::fmt;
 
+#[derive(Clone)]
 pub struct Container {
     pub grid: grid::Grid
 }

@@ -38,6 +38,7 @@ use std::fmt;
 /// d e f
 /// g h i
 /// ```
+#[derive(Clone)]
 pub struct Grid {
     columns: usize,
     nodes: Vec<Node>
@@ -117,7 +118,7 @@ impl Grid {
 impl fmt::Display for Grid {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         for (i, node) in self.nodes.iter().enumerate() {
-            if (i + 1) % self.columns == 0 {
+            if (i) % self.columns == 0 {
                 write!(f, "{}", "\n")?;
             }
             write!(f, "{}", node)?;
@@ -134,6 +135,7 @@ impl fmt::Display for Grid {
 /// This is used to specify which container is being described.
 /// * `Tile(Tile)` - The Tile variant has an associated Tile structure.
 /// This is used to specify which tile is being described.
+#[derive(Clone)]
 pub enum Node {
     Container(container::Container),
     Tile(tile::Tile)

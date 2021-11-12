@@ -1,26 +1,10 @@
 mod grid;
-
-/// 1 World
-/// 1 Continent
-/// 1 Node at this scale = 60 miles^2
-/// 
-/// The world is 1 continent, bordered by ocean.
-/// +----+
-/// | 01 |
-/// +----+
-
-/// 1 World
-/// 1 Continent
-/// 10 Kingdoms
-/// 1 Node at this scale = 6 miles^2
-/// 10 Kingdom Nodes = 1 World Node
-/// 
-/// There are 10 kingdoms on the continent.
-/// +----+----+----+----+----+
-/// | 01 | 02 | 03 | 04 | 05 |
-/// +----+----+----+----+----+
-/// | 06 | 07 | 08 | 09 | 10 |
-/// +----+----+----+----+----+
+use grid::Grid as Grid;
+use grid::Node as GridNode;
+use grid::container::Container as Container;
+use grid::tile::Tile as Tile;
+use grid::tile::TileIcon as TileIcon;
+use grid::tile::TileKind as TileKind;
 
 /// 1 World
 /// 1 Continent
@@ -38,50 +22,195 @@ mod grid;
 /// | 34 35 36 | 40 41 42 | 46 47 48 | 52 53 54 | 58 59 60 |
 /// +----------+----------+----------+----------+----------+
 
-/// Map
-/// Province Scale
-/// 1 Node = 5 ft^2
-/// 1056 Map Nodes = 1 Province Node
-/// 
-/// Each province has 1024 Tiles.
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// #                                                             #
-/// # # # - # #   # # - # #       # # # # # # # # # # # # # # #   #
-/// # #       #   #       #       # # # # # # # # # # # # # # #   #
-/// # #       #   #       #       # # # # # # # # # # # # # # #   #
-/// # # # # # #   # # # # #       # # # # # # # # # # # # # # #   #
-/// #                             # # # # # # # # # # # # # # -   #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
 fn main() {
-    let province01 = grid::Grid::new(32, vec![
-        grid::Node::Tile(grid::tile::Tile {kind: grid::tile::TileKind::Wall, icon: grid::tile::TileIcon::Wall})
-    ]
-    );
+    let wall = GridNode::Tile(Tile {kind: TileKind::Wall, icon: TileIcon::Wall});
+    let floor = GridNode::Tile(Tile {kind: TileKind::Floor, icon: TileIcon::Floor});
+
+    let blank_room = Grid::new(6, vec![
+        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
+        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
+        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
+        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
+        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
+        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone()
+    ]);
+
+    let room1 = Grid::new(6, vec![
+        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
+        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
+        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
+        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
+        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
+        wall.clone(), wall.clone(), floor.clone(),floor.clone(),wall.clone(), wall.clone()
+    ]);
+
+    let room2 = Grid::new(6, vec![
+        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
+        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
+        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),floor.clone(),
+        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),floor.clone(),
+        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
+        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone()
+    ]);
+
+    let room3 = Grid::new(6, vec![
+        // Row 1
+        wall.clone(),
+        wall.clone(),
+        floor.clone(),
+        floor.clone(),
+        wall.clone(),
+        wall.clone(),
+
+        // Row 2
+        wall.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        wall.clone(),
+
+        // Row 3
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+
+        // Row 4
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+
+        // Row 5
+        wall.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        wall.clone(),
+
+        // Row 6
+        wall.clone(),
+        wall.clone(),
+        floor.clone(),
+        floor.clone(),
+        wall.clone(),
+        wall.clone()
+    ]);
+
+    let room4 = Grid::new(6, vec![
+        // Row 1
+        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
+
+        // Row 2
+        wall.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        wall.clone(),
+
+        // Row 3
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        wall.clone(),
+
+        // Row 4
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        wall.clone(),
+
+        // Row 5
+        wall.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        wall.clone(),
+
+        // Row 6
+        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone()
+    ]);
+
+    let room5 = Grid::new(6, vec![
+        // Row 1
+        wall.clone(),
+        wall.clone(),
+        floor.clone(),
+        floor.clone(),
+        wall.clone(),
+        wall.clone(),
+
+        // Row 2
+        wall.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        wall.clone(),
+
+        // Row 3
+        wall.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        wall.clone(),
+
+        // Row 4
+        wall.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        wall.clone(),
+
+        // Row 5
+        wall.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        floor.clone(),
+        wall.clone(),
+
+        // Row 6
+        wall.clone(),
+        wall.clone(),
+        floor.clone(),
+        floor.clone(),
+        wall.clone(),
+        wall.clone(),
+    ]);
+
+    // let map = Grid::new(3, vec![
+    //     // Row 1
+    //     GridNode::Container(Container {grid: blank_room}),
+    //     GridNode::Container(Container {grid: room1}),
+    //     GridNode::Container(Container {grid: blank_room}),
+
+    //     // Row 2
+    //     GridNode::Container(Container {grid: room2}),
+    //     GridNode::Container(Container {grid: room3}),
+    //     GridNode::Container(Container {grid: room4}),
+
+    //     // Row 3
+    //     GridNode::Container(Container {grid: blank_room}),
+    //     GridNode::Container(Container {grid: room5}),
+    //     GridNode::Container(Container {grid: blank_room})
+    // ]);
+
+    println!("{}", blank_room);
 }
 
 // ------------------------------------------------------------------------------------------------
