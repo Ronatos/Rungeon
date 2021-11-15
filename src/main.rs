@@ -6,6 +6,8 @@ use grid::tile::Tile as Tile;
 use grid::tile::TileIcon as TileIcon;
 use grid::tile::TileKind as TileKind;
 
+mod dice;
+
 /// 1 World
 /// 1 Continent
 /// 10 Kingdoms
@@ -54,163 +56,50 @@ fn main() {
     ]);
 
     let room3 = Grid::new(6, vec![
-        // Row 1
-        wall.clone(),
-        wall.clone(),
-        floor.clone(),
-        floor.clone(),
-        wall.clone(),
-        wall.clone(),
-
-        // Row 2
-        wall.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        wall.clone(),
-
-        // Row 3
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-
-        // Row 4
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-
-        // Row 5
-        wall.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        wall.clone(),
-
-        // Row 6
-        wall.clone(),
-        wall.clone(),
-        floor.clone(),
-        floor.clone(),
-        wall.clone(),
-        wall.clone()
+        wall.clone(), wall.clone(), floor.clone(), floor.clone(), wall.clone(), wall.clone(),
+        wall.clone(), floor.clone(),floor.clone(), floor.clone(), floor.clone(),wall.clone(),
+        floor.clone(),floor.clone(),floor.clone(), floor.clone(), floor.clone(),floor.clone(),
+        floor.clone(),floor.clone(),floor.clone(), floor.clone(), floor.clone(),floor.clone(),
+        wall.clone(), floor.clone(),floor.clone(), floor.clone(), floor.clone(),wall.clone(),
+        wall.clone(), wall.clone(), floor.clone(), floor.clone(), wall.clone(), wall.clone()
     ]);
 
     let room4 = Grid::new(6, vec![
-        // Row 1
         wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
-
-        // Row 2
-        wall.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        wall.clone(),
-
-        // Row 3
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        wall.clone(),
-
-        // Row 4
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        wall.clone(),
-
-        // Row 5
-        wall.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        wall.clone(),
-
-        // Row 6
+        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
+        floor.clone(),floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
+        floor.clone(),floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
+        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
         wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone()
     ]);
 
     let room5 = Grid::new(6, vec![
-        // Row 1
-        wall.clone(),
-        wall.clone(),
-        floor.clone(),
-        floor.clone(),
-        wall.clone(),
-        wall.clone(),
-
-        // Row 2
-        wall.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        wall.clone(),
-
-        // Row 3
-        wall.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        wall.clone(),
-
-        // Row 4
-        wall.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        wall.clone(),
-
-        // Row 5
-        wall.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        floor.clone(),
-        wall.clone(),
-
-        // Row 6
-        wall.clone(),
-        wall.clone(),
-        floor.clone(),
-        floor.clone(),
-        wall.clone(),
-        wall.clone(),
+        wall.clone(), wall.clone(), floor.clone(), floor.clone(), wall.clone(), wall.clone(),
+        wall.clone(), floor.clone(),floor.clone(), floor.clone(), floor.clone(),wall.clone(),
+        wall.clone(), floor.clone(),floor.clone(), floor.clone(), floor.clone(),wall.clone(),
+        wall.clone(), floor.clone(),floor.clone(), floor.clone(), floor.clone(),wall.clone(),
+        wall.clone(), floor.clone(),floor.clone(), floor.clone(), floor.clone(),wall.clone(),
+        wall.clone(), wall.clone(), floor.clone(), floor.clone(), wall.clone(), wall.clone(),
     ]);
 
-    // let map = Grid::new(3, vec![
-    //     // Row 1
-    //     GridNode::Container(Container {grid: blank_room}),
-    //     GridNode::Container(Container {grid: room1}),
-    //     GridNode::Container(Container {grid: blank_room}),
+    let map = Grid::new(3, vec![
+        // Row 1
+        GridNode::Container(Container {grid: blank_room.clone()}),
+        GridNode::Container(Container {grid: room1}),
+        GridNode::Container(Container {grid: blank_room.clone()}),
 
-    //     // Row 2
-    //     GridNode::Container(Container {grid: room2}),
-    //     GridNode::Container(Container {grid: room3}),
-    //     GridNode::Container(Container {grid: room4}),
+        // Row 2
+        GridNode::Container(Container {grid: room2}),
+        GridNode::Container(Container {grid: room3}),
+        GridNode::Container(Container {grid: room4}),
 
-    //     // Row 3
-    //     GridNode::Container(Container {grid: blank_room}),
-    //     GridNode::Container(Container {grid: room5}),
-    //     GridNode::Container(Container {grid: blank_room})
-    // ]);
+        // Row 3
+        GridNode::Container(Container {grid: blank_room.clone()}),
+        GridNode::Container(Container {grid: room5}),
+        GridNode::Container(Container {grid: blank_room.clone()})
+    ]);
 
-    println!("{}", blank_room);
+    println!("{}", map);
 }
 
 // ------------------------------------------------------------------------------------------------
