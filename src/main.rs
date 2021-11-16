@@ -8,6 +8,8 @@ use grid::tile::TileKind as TileKind;
 
 mod dice;
 
+mod room;
+
 /// 1 World
 /// 1 Continent
 /// 10 Kingdoms
@@ -34,69 +36,36 @@ fn main() {
         wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
         wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
         wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
+        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
+        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
         wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone()
     ]);
 
-    let room1 = Grid::new(6, vec![
-        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
-        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
-        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
-        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
-        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
-        wall.clone(), wall.clone(), floor.clone(),floor.clone(),wall.clone(), wall.clone()
-    ]);
-
-    let room2 = Grid::new(6, vec![
-        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
-        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
-        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),floor.clone(),
-        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),floor.clone(),
-        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
-        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone()
-    ]);
-
-    let room3 = Grid::new(6, vec![
-        wall.clone(), wall.clone(), floor.clone(), floor.clone(), wall.clone(), wall.clone(),
-        wall.clone(), floor.clone(),floor.clone(), floor.clone(), floor.clone(),wall.clone(),
-        floor.clone(),floor.clone(),floor.clone(), floor.clone(), floor.clone(),floor.clone(),
-        floor.clone(),floor.clone(),floor.clone(), floor.clone(), floor.clone(),floor.clone(),
-        wall.clone(), floor.clone(),floor.clone(), floor.clone(), floor.clone(),wall.clone(),
-        wall.clone(), wall.clone(), floor.clone(), floor.clone(), wall.clone(), wall.clone()
-    ]);
-
-    let room4 = Grid::new(6, vec![
-        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
-        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
-        floor.clone(),floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
-        floor.clone(),floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
-        wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),
-        wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone()
-    ]);
-
-    let room5 = Grid::new(6, vec![
-        wall.clone(), wall.clone(), floor.clone(), floor.clone(), wall.clone(), wall.clone(),
-        wall.clone(), floor.clone(),floor.clone(), floor.clone(), floor.clone(),wall.clone(),
-        wall.clone(), floor.clone(),floor.clone(), floor.clone(), floor.clone(),wall.clone(),
-        wall.clone(), floor.clone(),floor.clone(), floor.clone(), floor.clone(),wall.clone(),
-        wall.clone(), floor.clone(),floor.clone(), floor.clone(), floor.clone(),wall.clone(),
-        wall.clone(), wall.clone(), floor.clone(), floor.clone(), wall.clone(), wall.clone(),
-    ]);
+    let room1 = room::starting_area_1::new();
+    let room2 = room::starting_area_1::new();
+    let room3 = room::starting_area_1::new();
+    let room4 = room::starting_area_1::new();
+    let room5 = room::starting_area_1::new();
+    let room6 = room::starting_area_1::new();
+    let room7 = room::starting_area_1::new();
+    let room8 = room::starting_area_1::new();
+    let room9 = room::starting_area_1::new();
 
     let map = Grid::new(3, vec![
         // Row 1
-        GridNode::Container(Container {grid: blank_room.clone()}),
         GridNode::Container(Container {grid: room1}),
-        GridNode::Container(Container {grid: blank_room.clone()}),
-
-        // Row 2
         GridNode::Container(Container {grid: room2}),
         GridNode::Container(Container {grid: room3}),
+
+        // Row 2
         GridNode::Container(Container {grid: room4}),
+        GridNode::Container(Container {grid: room5}),
+        GridNode::Container(Container {grid: room6}),
 
         // Row 3
-        GridNode::Container(Container {grid: blank_room.clone()}),
-        GridNode::Container(Container {grid: room5}),
-        GridNode::Container(Container {grid: blank_room.clone()})
+        GridNode::Container(Container {grid: room7}),
+        GridNode::Container(Container {grid: room8}),
+        GridNode::Container(Container {grid: room9})
     ]);
 
     println!("{}", map);

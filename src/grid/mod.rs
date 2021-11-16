@@ -40,8 +40,8 @@ use std::fmt;
 /// ```
 #[derive(Clone)]
 pub struct Grid {
-    columns: usize,
-    nodes: Vec<Node>
+    pub columns: usize,
+    pub nodes: Vec<Node>
 }
 
 impl Grid {
