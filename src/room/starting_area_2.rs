@@ -9,7 +9,7 @@ use grid::tile::TileKind as TileKind;
 
 use rand::Rng;
 
-/// Starting Area 1
+/// Starting Area 2
 /// 
 /// Base Shape
 /// # # # # # # # #
@@ -51,111 +51,121 @@ pub fn new() -> Grid {
         wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),wall.clone()
     ]);
 
-    // pick a random wall
-    // note that wall as occupied
-    // build the passage there
-    // pick another wall
-    // note it as occupied
-    // build a door there
-    // pick another wall
-    // build a door there
+    // Repeat exactly 3 times.
+    // 1. Select a wall from the remaining empty walls at random.
+    // 2. Determine if a passage or door is to be built
+    // 2a. Build a passage
+    // 2b. Build a door
+    // 3. Remove whichever wall is selected from the list of available walls.
 
-    let mut occupied_wall_list: Vec<Wall> = Vec::new();
-    let mut passages_placed = 0;
-    let doors_placed = 0;
-    loop {
-        let roll = dice::roll(4);
-        if roll == 1 && !vec_contains_wall(occupied_wall_list, Wall::North) {
-            // We can put something on the north wall
+    let mut exits_to_build = 3;
+    let mut num_doors = 0;
+    let mut num_passages = 0;
+    while exits_to_build > 0 {
+        let mut empty_walls = vec![Wall::North, Wall::South, Wall::East, Wall::West];
+        
 
-            if passages_placed == 0 {
-                // We want to place a passage
-                if dice::roll(12) <= 2 { // This will be a 5ft wide passage
-                    starting_area2 = generate_5ft_passage_ns(starting_area2, 0, 1);
-                }
-                else { // This will be a 10ft wide passage
-                    starting_area2 = generate_10ft_passage_ns(starting_area2, 0, 1);
-                }
-                passages_placed = passages_placed + 1;
-                occupied_wall_list.push(Wall::North);
-            }
-            else if doors_placed < 2 {
-                // We want to place a door
-            }
-            else {
-                // We've placed everything we can. Time to end.
-                break;
-            }
-        }
-        else if roll == 2 && !vec_contains_wall(occupied_wall_list, Wall::South) {
-            // We can put something on the south wall
-
-            if passages_placed == 0 {
-                // We want to place a passage
-                if dice::roll(12) <= 2 { // This will be a 5ft wide passage
-                    starting_area2 = generate_5ft_passage_ns(starting_area2, 6, 7);
-                }
-                else { // This will be a 10ft wide passage
-                    starting_area2 = generate_10ft_passage_ns(starting_area2, 6, 7);
-                }
-                passages_placed = passages_placed + 1;
-                occupied_wall_list.push(Wall::South);
-            }
-            else if doors_placed < 2 {
-                // We want to place a door
-            }
-            else {
-                // We've placed everything we can. Time to end.
-                break;
-            }
-        }
-        else if roll == 3 && !vec_contains_wall(occupied_wall_list, Wall::East) {
-            // We can put something on the east wall
-
-            if passages_placed == 0 {
-                // We want to place a passage
-                if dice::roll(12) <= 2 { // This will be a 5ft wide passage
-                    starting_area2 = generate_5ft_passage_ew(starting_area2, 6, 7);
-                }
-                else { // This will be a 10ft wide passage
-                    starting_area2 = generate_10ft_passage_ew(starting_area2, 6, 7);
-                }
-                passages_placed = passages_placed + 1;
-                occupied_wall_list.push(Wall::East);
-            }
-            else if doors_placed < 2 {
-                // We want to place a door
-            }
-            else {
-                // We've placed everything we can. Time to end.
-                break;
-            }
-        }
-        else if roll == 2 && !vec_contains_wall(occupied_wall_list, Wall::West) {
-            // We can put something on the west wall
-
-            if passages_placed == 0 {
-                // We want to place a passage
-                if dice::roll(12) <= 2 { // This will be a 5ft wide passage
-                    starting_area2 = generate_5ft_passage_ew(starting_area2, 0, 1);
-                }
-                else { // This will be a 10ft wide passage
-                    starting_area2 = generate_10ft_passage_ew(starting_area2, 0, 1);
-                }
-                passages_placed = passages_placed + 1;
-                occupied_wall_list.push(Wall::West);
-            }
-            else if doors_placed < 2 {
-                // We want to place a door
-            }
-            else {
-                // We've placed everything we can. Time to end.
-                break;
-            }
-        }
+        exits_to_build = exits_to_build - 1;
     }
 
     starting_area2
+
+    // let mut occupied_wall_list: Vec<Wall> = Vec::new();
+    // let mut passages_placed = 0;
+    // let doors_placed = 0;
+    // loop {
+    //     let roll = dice::roll(4);
+    //     if roll == 1 && !vec_contains_wall(occupied_wall_list, Wall::North) {
+    //         // We can put something on the north wall
+
+    //         if passages_placed == 0 {
+    //             // We want to place a passage
+    //             if dice::roll(12) <= 2 { // This will be a 5ft wide passage
+    //                 starting_area2 = generate_5ft_passage_ns(starting_area2, 0, 1);
+    //             }
+    //             else { // This will be a 10ft wide passage
+    //                 starting_area2 = generate_10ft_passage_ns(starting_area2, 0, 1);
+    //             }
+    //             passages_placed = passages_placed + 1;
+    //             occupied_wall_list.push(Wall::North);
+    //         }
+    //         else if doors_placed < 2 {
+    //             // We want to place a door
+    //         }
+    //         else {
+    //             // We've placed everything we can. Time to end.
+    //             break;
+    //         }
+    //     }
+    //     else if roll == 2 && !vec_contains_wall(occupied_wall_list, Wall::South) {
+    //         // We can put something on the south wall
+
+    //         if passages_placed == 0 {
+    //             // We want to place a passage
+    //             if dice::roll(12) <= 2 { // This will be a 5ft wide passage
+    //                 starting_area2 = generate_5ft_passage_ns(starting_area2, 6, 7);
+    //             }
+    //             else { // This will be a 10ft wide passage
+    //                 starting_area2 = generate_10ft_passage_ns(starting_area2, 6, 7);
+    //             }
+    //             passages_placed = passages_placed + 1;
+    //             occupied_wall_list.push(Wall::South);
+    //         }
+    //         else if doors_placed < 2 {
+    //             // We want to place a door
+    //         }
+    //         else {
+    //             // We've placed everything we can. Time to end.
+    //             break;
+    //         }
+    //     }
+    //     else if roll == 3 && !vec_contains_wall(occupied_wall_list, Wall::East) {
+    //         // We can put something on the east wall
+
+    //         if passages_placed == 0 {
+    //             // We want to place a passage
+    //             if dice::roll(12) <= 2 { // This will be a 5ft wide passage
+    //                 starting_area2 = generate_5ft_passage_ew(starting_area2, 6, 7);
+    //             }
+    //             else { // This will be a 10ft wide passage
+    //                 starting_area2 = generate_10ft_passage_ew(starting_area2, 6, 7);
+    //             }
+    //             passages_placed = passages_placed + 1;
+    //             occupied_wall_list.push(Wall::East);
+    //         }
+    //         else if doors_placed < 2 {
+    //             // We want to place a door
+    //         }
+    //         else {
+    //             // We've placed everything we can. Time to end.
+    //             break;
+    //         }
+    //     }
+    //     else if roll == 2 && !vec_contains_wall(occupied_wall_list, Wall::West) {
+    //         // We can put something on the west wall
+
+    //         if passages_placed == 0 {
+    //             // We want to place a passage
+    //             if dice::roll(12) <= 2 { // This will be a 5ft wide passage
+    //                 starting_area2 = generate_5ft_passage_ew(starting_area2, 0, 1);
+    //             }
+    //             else { // This will be a 10ft wide passage
+    //                 starting_area2 = generate_10ft_passage_ew(starting_area2, 0, 1);
+    //             }
+    //             passages_placed = passages_placed + 1;
+    //             occupied_wall_list.push(Wall::West);
+    //         }
+    //         else if doors_placed < 2 {
+    //             // We want to place a door
+    //         }
+    //         else {
+    //             // We've placed everything we can. Time to end.
+    //             break;
+    //         }
+    //     }
+    // }
+
+    // starting_area2
 }
 
 enum Wall {
