@@ -61,8 +61,8 @@ pub fn new() -> Grid {
     let mut exits_to_build = 3;
     let mut num_doors = 0;
     let mut num_passages = 0;
+    let mut empty_walls = vec![Wall::North, Wall::South, Wall::East, Wall::West];
     while exits_to_build > 0 {
-        let mut empty_walls = vec![Wall::North, Wall::South, Wall::East, Wall::West];
         
 
         exits_to_build = exits_to_build - 1;

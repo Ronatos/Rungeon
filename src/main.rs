@@ -51,24 +51,36 @@ fn main() {
     let room8 = room::starting_area_1::new();
     let room9 = room::starting_area_1::new();
 
-    let map = Grid::new(3, vec![
-        // Row 1
-        GridNode::Container(Container {grid: room1}),
-        GridNode::Container(Container {grid: room2}),
-        GridNode::Container(Container {grid: room3}),
+    // let map = Grid::new(3, vec![
+    //     // Row 1
+    //     GridNode::Container(Container {grid: room1}),
+    //     GridNode::Container(Container {grid: room2}),
+    //     GridNode::Container(Container {grid: room3}),
 
-        // Row 2
-        GridNode::Container(Container {grid: room4}),
-        GridNode::Container(Container {grid: room5}),
-        GridNode::Container(Container {grid: room6}),
+    //     // Row 2
+    //     GridNode::Container(Container {grid: room4}),
+    //     GridNode::Container(Container {grid: room5}),
+    //     GridNode::Container(Container {grid: room6}),
 
-        // Row 3
-        GridNode::Container(Container {grid: room7}),
-        GridNode::Container(Container {grid: room8}),
-        GridNode::Container(Container {grid: room9})
-    ]);
+    //     // Row 3
+    //     GridNode::Container(Container {grid: room7}),
+    //     GridNode::Container(Container {grid: room8}),
+    //     GridNode::Container(Container {grid: room9})
+    // ]);
 
-    println!("{}", map);
+    let map2 = GridNode::Container(Container {
+        grid: Grid::new(2, vec![
+            // Row 1
+            GridNode::Container(room1),
+            GridNode::Container(room2),
+
+            // Row 2
+            GridNode::Container(room3),
+            GridNode::Container(room4)
+        ])
+    });
+
+    println!("{}", map2);
 }
 
 // ------------------------------------------------------------------------------------------------

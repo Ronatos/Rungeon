@@ -3,6 +3,7 @@ use crate::dice;
 use crate::grid;
 use grid::Grid as Grid;
 use grid::Node as GridNode;
+use grid::container::Container as Container;
 use grid::tile::Tile as Tile;
 use grid::tile::TileIcon as TileIcon;
 use grid::tile::TileKind as TileKind;
@@ -33,7 +34,7 @@ use rand::Rng;
 /// # #         # #
 /// # # #   # # # #
 /// # # #   # # # #
-pub fn new() -> Grid {
+pub fn new() -> Container {
     let wall = GridNode::Tile(Tile {kind: TileKind::Wall, icon: TileIcon::Wall});
     let floor = GridNode::Tile(Tile {kind: TileKind::Floor, icon: TileIcon::Floor});
 
@@ -80,7 +81,7 @@ pub fn new() -> Grid {
         starting_area1 = generate_10ft_passage_ew(starting_area1, 6, 7);
     }
 
-    starting_area1
+    Container {grid: starting_area1}
 }
 
 fn generate_5ft_passage_ns(mut starting_area: Grid, top_row: usize, bottom_row: usize) -> Grid {
