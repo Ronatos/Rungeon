@@ -55,6 +55,7 @@ impl fmt::Display for Tile {
 /// * `Wall` - This is used to specify that a tile is a wall tile.
 #[derive(Copy, Clone)]
 pub enum TileKind {
+    Door,
     Floor,
     Wall
 }
@@ -68,6 +69,7 @@ pub enum TileKind {
 /// * `Wall` - A number sign. "#"
 #[derive(Copy, Clone)]
 pub enum TileIcon {
+    Door,
     Floor,
     Wall
 }
@@ -77,6 +79,7 @@ pub enum TileIcon {
 impl fmt::Display for TileIcon {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            TileIcon::Door => write!(f, "{} ", "d"),
             TileIcon::Wall => write!(f, "{} ", "#"),
             TileIcon::Floor => write!(f, "{} ", " ")
         }
