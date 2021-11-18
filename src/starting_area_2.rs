@@ -37,8 +37,14 @@ use rand::Rng;
 /// # # # d # # # #
 /// # # #   # # # #
 pub fn new() -> Grid {
-    let wall = GridNode::Tile(Tile {kind: TileKind::Wall, icon: TileIcon::Wall});
-    let floor = GridNode::Tile(Tile {kind: TileKind::Floor, icon: TileIcon::Floor});
+    let wall = Node::Tile(Tile {
+        kind: TileKind::Wall,
+        icon: TileIcon::Wall
+    });
+    let floor = Node::Tile(Tile {
+        kind: TileKind::Floor,
+        icon: TileIcon::Floor
+    });
 
     let mut starting_area2 = Grid::new(8, vec![
         wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),wall.clone(),

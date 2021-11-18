@@ -1,15 +1,14 @@
-pub mod container;
 pub mod tile;
 use std::fmt;
 
-/// A Grid is a 1-dimensional vector of Nodes, which may be Containers (of one or more nested grids) or Tiles.
+/// A Grid is a 1-dimensional vector of Nodes, which may be Rooms or Tiles.
 /// 
 /// # Fields
 /// 
 /// * `columns: usize` - The number of columns in the grid. Used to determine
 /// the number and length of columns and rows.
 /// * `nodes: Vec<Node>` - A vector of Nodes, which makes up the grid.
-/// Nodes may either hold a Container or a Tile.
+/// Nodes may either hold a Room or a Tile.
 /// 
 /// # Examples
 /// 
@@ -94,27 +93,13 @@ impl Grid {
 }
 
 /// The Display function tells std::fmt how to display a grid on the screen.
-/// For each node, the Display function is called. This will recursively display
-/// Containers until Tiles are reached. Recursive branches always terminate on Tile
-/// grids.
+/// For each Tile in the grid, the Display function is called.
 /// 
-/// For example, if the top level grid is a map of an apartment with several rooms in it,
-/// that map would be made up of a grid of rooms. Each of those rooms would be made of a grid
-/// of tiles. Display would first display room 1, and room 1 would first display tile 1.
+/// A grid is displayed in the following order:
 /// 
-/// A grid is displayed in the following order (grid lines are added for readability on a 3x3 grid):
-/// 
-/// 01 02 03 | 10 11 12 | 19 20 21
-/// 04 05 06 | 13 14 15 | 22 23 24
-/// 07 08 09 | 16 17 18 | 25 26 27
-/// ---------+----------+---------
-/// 28 29 30 | 37 38 39 | 46 47 48
-/// 31 32 33 | 40 41 42 | 49 50 51
-/// 34 35 36 | 43 44 45 | 52 53 54
-/// ---------+----------+---------
-/// 55 56 57 | 64 65 66 | 73 74 75
-/// 58 59 60 | 67 68 69 | 76 77 78
-/// 61 62 63 | 70 71 72 | 79 80 81
+/// 01 02 03
+/// 04 05 06
+/// 07 08 09
 impl fmt::Display for Grid {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         for (i, node) in self.nodes.iter().enumerate() {
@@ -127,17 +112,17 @@ impl fmt::Display for Grid {
     }
 }
 
-/// An enum specifying whether a Grid node is to be a Container or a Tile.
+/// An enum specifying whether a Grid node is to be a Room or a Tile.
 /// 
 /// # Variants
 /// 
-/// * `Container(Container)` - The Container variant has an associated Container structure.
-/// This is used to specify which container is being described.
+/// * `Room(Grid)` - The Room variant has an associated Grid structure.
+/// This is used to specify which room is being described.
 /// * `Tile(Tile)` - The Tile variant has an associated Tile structure.
 /// This is used to specify which tile is being described.
 #[derive(Clone)]
 pub enum Node {
-    Container(container::Container),
+    Room(Grid),
     Tile(tile::Tile)
 }
 
@@ -146,7 +131,7 @@ pub enum Node {
 impl fmt::Display for Node {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Node::Container(container) => write!(f, "{}", container),
+            Node::Room(grid) => write!(f, "{}", grid),
             Node::Tile(tile) => write!(f, "{}", tile)
         }
     }
