@@ -68,7 +68,9 @@ pub fn new() -> Grid {
     let mut num_doors = 0;
     let mut num_passages = 0;
     let mut empty_walls = vec![Wall::North, Wall::South, Wall::East, Wall::West];
+    let mut rng = rand::thread_rng();
     while exits_to_build > 0 {
+        let wall_number = rng.gen_range(1..empty_walls + 1);
         
 
         exits_to_build = exits_to_build - 1;
