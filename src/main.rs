@@ -5,13 +5,14 @@ use grid::Node as Node;
 
 mod starting_area_1;
 mod starting_area_2;
+mod starting_area_3;
 
 fn main() {
 
-    let room0 = starting_area_2::new();
+    let room0 = starting_area_1::new();
     let room1 = starting_area_2::new();
-    let room2 = starting_area_2::new();
-    let room3 = starting_area_2::new();
+    let room2 = starting_area_3::new();
+    let room3 = starting_area_3::new();
 
     let map = grid::Grid::new(2, vec![
         // Row 1
