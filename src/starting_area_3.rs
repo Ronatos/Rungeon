@@ -71,7 +71,6 @@ pub fn new() -> Grid {
     // 3. Remove whichever wall is selected from the list of available walls.
 
     let mut exits_to_build = 3;
-    let mut num_doors = 0;
     let mut empty_walls = vec![Wall::North, Wall::South, Wall::East, Wall::West];
     let mut rng = rand::thread_rng();
     while exits_to_build > 0 {
