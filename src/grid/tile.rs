@@ -57,7 +57,8 @@ impl fmt::Display for Tile {
 pub enum TileKind {
     Door,
     Floor,
-    Wall
+    Wall,
+    Well
 }
 
 /// An enum specifying the type of icon that should be displayed when a tile is displayed.
@@ -71,7 +72,8 @@ pub enum TileKind {
 pub enum TileIcon {
     Door,
     Floor,
-    Wall
+    Wall,
+    Well
 }
 
 /// The Display function tells std::fmt how to display a tile on the screen.
@@ -80,8 +82,9 @@ impl fmt::Display for TileIcon {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             TileIcon::Door => write!(f, "{} ", "d"),
+            TileIcon::Floor => write!(f, "{} ", " "),
             TileIcon::Wall => write!(f, "{} ", "#"),
-            TileIcon::Floor => write!(f, "{} ", " ")
+            TileIcon::Well => write!(f, "{} ", "w"),
         }
     }
 }
