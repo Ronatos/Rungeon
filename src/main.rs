@@ -3,17 +3,14 @@ mod dice;
 mod grid;
 use grid::Node as Node;
 
-mod starting_area_1;
-mod starting_area_2;
-mod starting_area_3;
-mod starting_area_4;
+mod room;
 
 fn main() {
 
-    let room0 = starting_area_1::new();
-    let room1 = starting_area_2::new();
-    let room2 = starting_area_3::new();
-    let room3 = starting_area_4::new();
+    let room0 = room::starting_area_5::new();
+    let room1 = room::starting_area_5::new();
+    let room2 = room::starting_area_5::new();
+    let room3 = room::starting_area_5::new();
 
     let map = grid::Grid::new(2, vec![
         // Row 1

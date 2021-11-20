@@ -1,4 +1,6 @@
-use crate::dice;
+use crate::room::construction;
+use construction::place_door as place_door;
+use construction::Wall as Wall;
 
 use crate::grid;
 use grid::Grid as Grid;
@@ -79,16 +81,16 @@ pub fn new() -> Grid {
 
         match wall_selection {
             Wall::North => {
-                starting_area3 = place_door(starting_area3, Wall::North, 0, 1);
+                starting_area3 = place_door(starting_area3, Wall::North);
             },
             Wall::South => {
-                starting_area3 = place_door(starting_area3, Wall::South, 10, 11);
+                starting_area3 = place_door(starting_area3, Wall::South);
             },
             Wall::East => {
-                starting_area3 = place_door(starting_area3, Wall::East, 0, 1);
+                starting_area3 = place_door(starting_area3, Wall::East);
             },
             Wall::West => {
-                starting_area3 = place_door(starting_area3, Wall::West, 10, 11);
+                starting_area3 = place_door(starting_area3, Wall::West);
             }
         }
 
@@ -97,49 +99,4 @@ pub fn new() -> Grid {
     }
 
     starting_area3
-}
-
-enum Wall {
-    North,
-    South,
-    East,
-    West
-}
-
-fn place_door(mut starting_area: Grid, wall: Wall, lower_coordinate: usize, higher_coordinate: usize) -> Grid {
-    let mut rng = rand::thread_rng();
-    let door = Node::Tile(Tile {kind: TileKind::Door, icon: TileIcon::Door});
-    let floor = Node::Tile(Tile {kind: TileKind::Floor, icon: TileIcon::Floor});
-
-    match wall {
-        Wall::North => {
-            let column = rng.gen_range(2..10);
-            let top_row = lower_coordinate;
-            let bottom_row = higher_coordinate;
-            starting_area.nodes[column + (starting_area.columns * top_row)] = floor.clone();
-            starting_area.nodes[column + (starting_area.columns * bottom_row)] = door.clone();
-        },
-        Wall::South => {
-            let column = rng.gen_range(2..10);
-            let top_row = lower_coordinate;
-            let bottom_row = higher_coordinate;
-            starting_area.nodes[column + (starting_area.columns * top_row)] = door.clone();
-            starting_area.nodes[column + (starting_area.columns * bottom_row)] = floor.clone();
-        },
-        Wall::East => {
-            let row = rng.gen_range(2..10);
-            let left_column = lower_coordinate;
-            let right_column = higher_coordinate;
-            starting_area.nodes[(row * starting_area.columns) + left_column] = floor.clone();
-            starting_area.nodes[(row * starting_area.columns) + right_column] = door.clone();
-        },
-        Wall::West => {
-            let row = rng.gen_range(2..10);
-            let left_column = lower_coordinate;
-            let right_column = higher_coordinate;
-            starting_area.nodes[(row * starting_area.columns) + left_column] = door.clone();
-            starting_area.nodes[(row * starting_area.columns) + right_column] = floor.clone();
-        }
-    }
-    starting_area
 }
