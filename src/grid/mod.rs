@@ -108,7 +108,7 @@ impl fmt::Display for Grid {
             }
             write!(f, "{}", node)?;
         }
-        write!(f, "{}", "")
+        write!(f, "{}\n----------", "") // Remove the \n---------- when you're done debugging
     }
 }
 
