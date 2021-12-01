@@ -14,15 +14,13 @@ use grid::Node as Node;
 
 mod room;
 
-//importing in execute! macro
-#[macro_use]
-extern crate crossterm;
-
 use crossterm::cursor;
 use crossterm::event::{read, Event, KeyCode, KeyEvent, KeyModifiers};
+use crossterm::execute;
 use crossterm::style::Print;
 use crossterm::terminal::{disable_raw_mode, enable_raw_mode, Clear, ClearType};
-use std::io::{stdout, Write};
+
+use std::io::stdout;
 
 fn main() {
 
@@ -32,8 +30,11 @@ fn main() {
     enable_raw_mode().unwrap();
 
     //clearing the screen, going to top left corner and printing welcoming message
-    execute!(stdout, Clear(ClearType::All), cursor::MoveTo(0, 0), Print(r#"ctrl + q to exit, ctrl + h to print "Hello world", alt + t to print "crossterm is cool""#))
-            .unwrap();
+    execute!(stdout,
+        Clear(ClearType::All),
+        cursor::MoveTo(0, 0),
+        Print(r#"ctrl + q to exit, ctrl + h to print "Hello world", alt + t to print "crossterm is cool""#)
+    ).unwrap();
 
     //key detection
     loop {
