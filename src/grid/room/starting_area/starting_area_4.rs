@@ -1,86 +1,14 @@
-use crate::room::construction;
-use construction::place_door as place_door;
-use construction::place_passage as place_passage;
-use construction::Wall as Wall;
-
 use crate::dice;
+use crate::grid::Grid as Grid;
+use crate::grid::Node as Node;
+use crate::grid::room::place_door as place_door;
+use crate::grid::room::place_passage as place_passage;
+use crate::grid::room::Wall as Wall;
+use crate::grid::tile::Tile as Tile;
+use crate::grid::tile::TileIcon as TileIcon;
+use crate::grid::tile::TileKind as TileKind;
 
-use crate::grid;
-use grid::Grid as Grid;
-use grid::Node as Node;
-use grid::tile::Tile as Tile;
-use grid::tile::TileIcon as TileIcon;
-use grid::tile::TileKind as TileKind;
-
-/// Starting Area 4
-/// 
-/// Base Shape
-/// # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # #
-/// # #                                 # #
-/// # #   # #   # #   # #   # #   # #   # #
-/// # #   # #   # #   # #   # #   # #   # #
-/// # #                                 # #
-/// # # # # # # # # # # # # # # # # # # # #
-/// # # # # # # # # # # # # # # # # # # # #
-/// 
-/// OR
-/// 
-/// # # # # # # # #
-/// # # # # # # # #
-/// # #         # #
-/// # #   # #   # #
-/// # #   # #   # #
-/// # #         # #
-/// # #   # #   # #
-/// # #   # #   # #
-/// # #         # #
-/// # #   # #   # #
-/// # #   # #   # #
-/// # #         # #
-/// # #   # #   # #
-/// # #   # #   # #
-/// # #         # #
-/// # #   # #   # #
-/// # #   # #   # #
-/// # #         # #
-/// # # # # # # # #
-/// # # # # # # # #
-/// 
-/// 2 passages will need to be added on the long walls,
-/// and 2 doors will need to be added on the short walls
-///
-/// # # # # # # # # # # # # # # # #     # #
-/// # # # # # # # # # # # # # # # #     # #
-/// # #                                 # #
-///   d   # #   # #   # #   # #   # #   # #
-/// # #   # #   # #   # #   # #   # #   # #
-/// # #                                 d  
-/// # # # # # # # # #   # # # # # # # # # #
-/// # # # # # # # # #   # # # # # # # # # #
-/// 
-/// OR
-/// 
-/// # # # #   # # #
-/// # # # # d # # #
-/// # #         # #
-/// # #   # #      
-/// # #   # #      
-/// # #         # #
-/// # #   # #   # #
-///       # #   # #
-/// # #         # #
-/// # #   # #   # #
-/// # #   # #   # #
-/// # #         # #
-/// # #   # #   # #
-/// # #   # #   # #
-/// # #         # #
-/// # #   # #   # #
-/// # #   # #   # #
-/// # #         # #
-/// # # # d # # # #
-/// # # #   # # # #
+// https://github.com/Ronatos/rungeon/wiki/Room#starting-area-4
 pub fn new() -> Grid {
     let wall = Node::Tile(Tile {
         kind: TileKind::Wall,

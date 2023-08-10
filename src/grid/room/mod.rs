@@ -1,9 +1,10 @@
-use crate::grid;
-use grid::Grid as Grid;
-use grid::Node as Node;
-use grid::tile::Tile as Tile;
-use grid::tile::TileIcon as TileIcon;
-use grid::tile::TileKind as TileKind;
+pub mod starting_area;
+
+use crate::grid::Grid as Grid;
+use crate::grid::Node as Node;
+use crate::grid::tile::Tile as Tile;
+use crate::grid::tile::TileIcon as TileIcon;
+use crate::grid::tile::TileKind as TileKind;
 
 use rand::Rng;
 

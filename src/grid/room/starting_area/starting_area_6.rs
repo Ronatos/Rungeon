@@ -1,36 +1,12 @@
-use crate::room::construction;
-use construction::place_passage as place_passage;
-use construction::Wall as Wall;
+use crate::grid::Grid as Grid;
+use crate::grid::Node as Node;
+use crate::grid::room::place_passage as place_passage;
+use crate::grid::room::Wall as Wall;
+use crate::grid::tile::Tile as Tile;
+use crate::grid::tile::TileIcon as TileIcon;
+use crate::grid::tile::TileKind as TileKind;
 
-use crate::grid;
-use grid::Grid as Grid;
-use grid::Node as Node;
-use grid::tile::Tile as Tile;
-use grid::tile::TileIcon as TileIcon;
-use grid::tile::TileKind as TileKind;
-
-/// Starting Area 6
-/// 
-/// Base Shape
-/// # # # # # # # #
-/// # # # # # # # #
-/// # # #     # # #
-/// # #         # #
-/// # #         # #
-/// # # #     # # #
-/// # # # # # # # #
-/// # # # # # # # #
-/// 
-/// 1 passage will need to be added on each wall
-///
-/// # # # #   # # #
-/// # # # #   # # #
-/// # # #     # # #
-///          
-/// # #         
-/// # # #     # # #
-/// # # #     # # #
-/// # # #     # # #
+// https://github.com/Ronatos/rungeon/wiki/Room#starting-area-6
 pub fn new() -> Grid {
     let wall = Node::Tile(Tile {
         kind: TileKind::Wall,

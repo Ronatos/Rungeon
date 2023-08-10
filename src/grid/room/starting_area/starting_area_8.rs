@@ -1,46 +1,17 @@
-use crate::room::construction;
-use construction::place_door as place_door;
-use construction::place_passage as place_passage;
-use construction::Wall as Wall;
-
 use crate::dice;
-
-use crate::grid;
-use grid::Grid as Grid;
-use grid::Node as Node;
-use grid::tile::Tile as Tile;
-use grid::tile::TileIcon as TileIcon;
-use grid::tile::TileKind as TileKind;
+use crate::grid::Grid as Grid;
+use crate::grid::Node as Node;
+use crate::grid::room::place_door as place_door;
+use crate::grid::room::place_passage as place_passage;
+use crate::grid::room::place_secret_door as place_secret_door;
+use crate::grid::room::Wall as Wall;
+use crate::grid::tile::Tile as Tile;
+use crate::grid::tile::TileIcon as TileIcon;
+use crate::grid::tile::TileKind as TileKind;
 
 use rand::Rng;
 
-/// Starting Area 2
-/// 
-/// Base Shape
-/// # # # # # # # #
-/// # # # # # # # #
-/// # #         # #
-/// # #         # #
-/// # #         # #
-/// # #         # #
-/// # # # # # # # #
-/// # # # # # # # #
-/// 
-/// 1 passage will need to be added randomly: 1 random wall
-/// Each passage can either be 5ft or 10ft wide,
-/// and extends 10ft from the room.
-/// 
-/// 2 doors will need to be added randomly: 2 random walls not already occupied by a passage
-/// d for 'door'
-///
-/// # #     # # # #
-/// # #     # # # #
-/// # #         # #
-/// # #         d       
-/// # #         # #
-/// # #         # #
-/// # # # d # # # #
-/// # # #   # # # #
+// https://github.com/Ronatos/rungeon/wiki/Room#starting-area-8
 pub fn new() -> Grid {
     let wall = Node::Tile(Tile {
         kind: TileKind::Wall,
@@ -51,7 +22,7 @@ pub fn new() -> Grid {
         icon: TileIcon::Floor
     });
 
-    let mut starting_area2 = Grid::new(8, vec![
+    let mut starting_area8 = Grid::new(8, vec![
         wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),wall.clone(),
         wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),wall.clone(),
         wall.clone(), wall.clone(), floor.clone(),floor.clone(),floor.clone(),floor.clone(),wall.clone(),wall.clone(),
@@ -62,16 +33,15 @@ pub fn new() -> Grid {
         wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),wall.clone()
     ]);
 
-    // Repeat exactly 3 times.
+    // Repeat exactly 4 times.
     // 1. Select a wall from the remaining empty walls at random.
-    // 2. Determine if a passage or door is to be built
-    // 2a. Build a passage
-    // 2b. Build a door
+    // 2. Build a door
     // 3. Remove whichever wall is selected from the list of available walls.
 
-    let mut exits_to_build = 3;
+    let mut exits_to_build = 4;
     let mut num_doors = 0;
     let mut num_passages = 0;
+    let mut num_secret_doors = 0;
     let mut empty_walls = vec![Wall::North, Wall::South, Wall::East, Wall::West];
     let mut rng = rand::thread_rng();
     while exits_to_build > 0 {
@@ -82,34 +52,34 @@ pub fn new() -> Grid {
             match wall_selection {
                 Wall::North => {
                     if dice::roll(12) <= 2 { // This will be a 5ft wide passage
-                        starting_area2 = place_passage(starting_area2, Wall::North, 5);
+                        starting_area8 = place_passage(starting_area8, Wall::North, 5);
                     }
                     else { // This will be a 10ft wide passage
-                        starting_area2 = place_passage(starting_area2, Wall::North, 10);
+                        starting_area8 = place_passage(starting_area8, Wall::North, 10);
                     }
                 },
                 Wall::South => {
                     if dice::roll(12) <= 2 { // This will be a 5ft wide passage
-                        starting_area2 = place_passage(starting_area2, Wall::South, 5);
+                        starting_area8 = place_passage(starting_area8, Wall::South, 5);
                     }
                     else { // This will be a 10ft wide passage
-                        starting_area2 = place_passage(starting_area2, Wall::South, 10);
+                        starting_area8 = place_passage(starting_area8, Wall::South, 10);
                     }
                 },
                 Wall::East => {
                     if dice::roll(12) <= 2 { // This will be a 5ft wide passage
-                        starting_area2 = place_passage(starting_area2, Wall::East, 5);
+                        starting_area8 = place_passage(starting_area8, Wall::East, 5);
                     }
                     else { // This will be a 10ft wide passage
-                        starting_area2 = place_passage(starting_area2, Wall::East, 10);
+                        starting_area8 = place_passage(starting_area8, Wall::East, 10);
                     }
                 },
                 Wall::West => {
                     if dice::roll(12) <= 2 { // This will be a 5ft wide passage
-                        starting_area2 = place_passage(starting_area2, Wall::West, 5);
+                        starting_area8 = place_passage(starting_area8, Wall::West, 5);
                     }
                     else { // This will be a 10ft wide passage
-                        starting_area2 = place_passage(starting_area2, Wall::West, 10);
+                        starting_area8 = place_passage(starting_area8, Wall::West, 10);
                     }
                 }
             }
@@ -118,24 +88,41 @@ pub fn new() -> Grid {
         else if num_doors != 2 {
             match wall_selection {
                 Wall::North => {
-                    starting_area2 = place_door(starting_area2, Wall::North);
+                    starting_area8 = place_door(starting_area8, Wall::North);
                 },
                 Wall::South => {
-                    starting_area2 = place_door(starting_area2, Wall::South);
+                    starting_area8 = place_door(starting_area8, Wall::South);
                 },
                 Wall::East => {
-                    starting_area2 = place_door(starting_area2, Wall::East);
+                    starting_area8 = place_door(starting_area8, Wall::East);
                 },
                 Wall::West => {
-                    starting_area2 = place_door(starting_area2, Wall::West);
+                    starting_area8 = place_door(starting_area8, Wall::West);
                 }
             }
             num_doors = num_doors + 1;
+        }
+        else if num_secret_doors != 1 {
+            match wall_selection {
+                Wall::North => {
+                    starting_area8 = place_secret_door(starting_area8, Wall::North);
+                },
+                Wall::South => {
+                    starting_area8 = place_secret_door(starting_area8, Wall::South);
+                },
+                Wall::East => {
+                    starting_area8 = place_secret_door(starting_area8, Wall::East);
+                },
+                Wall::West => {
+                    starting_area8 = place_secret_door(starting_area8, Wall::West);
+                }
+            }
+            num_secret_doors = num_secret_doors + 1;
         }
 
         empty_walls.remove(wall_index);
         exits_to_build = exits_to_build - 1;
     }
 
-    starting_area2
+    starting_area8
 }

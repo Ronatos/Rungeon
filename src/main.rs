@@ -14,23 +14,23 @@ mod dice;
 
 mod grid;
 use grid::Node as Node;
-
-mod room;
+use grid::room as room;
+use room::starting_area as starting_area;
 
 fn main() {
 
-    let room0 = room::starting_area_1::new();
-    let room1 = room::starting_area_2::new();
-    let room2 = room::starting_area_3::new();
-    let room3 = room::starting_area_4::new();
-    let room4 = room::starting_area_5::new();
-    let room5 = room::starting_area_6::new();
-    let room6 = room::starting_area_7::new();
-    let room7 = room::starting_area_8::new();
-    let room8 = room::starting_area_9::new();
-    let room9 = room::starting_area_10::new();
-    let room10 = room::starting_area_9::new();
-    let room11 = room::starting_area_9::new();
+    let room0 = starting_area::starting_area_1::new();
+    let room1 = starting_area::starting_area_2::new();
+    let room2 = starting_area::starting_area_3::new();
+    let room3 = starting_area::starting_area_4::new();
+    let room4 = starting_area::starting_area_5::new();
+    let room5 = starting_area::starting_area_6::new();
+    let room6 = starting_area::starting_area_7::new();
+    let room7 = starting_area::starting_area_8::new();
+    let room8 = starting_area::starting_area_9::new();
+    let room9 = starting_area::starting_area_10::new();
+    let room10 = starting_area::starting_area_9::new();
+    let room11 = starting_area::starting_area_9::new();
 
     let map = grid::Grid::new(4, vec![
         Node::Room(room0), Node::Room(room1), Node::Room(room2), Node::Room(room3),

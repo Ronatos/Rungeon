@@ -1,47 +1,14 @@
-use crate::room::construction;
-use construction::place_door as place_door;
-use construction::Wall as Wall;
-
-use crate::grid;
-use grid::Grid as Grid;
-use grid::Node as Node;
-use grid::tile::Tile as Tile;
-use grid::tile::TileIcon as TileIcon;
-use grid::tile::TileKind as TileKind;
+use crate::grid::Grid as Grid;
+use crate::grid::Node as Node;
+use crate::grid::room::place_door as place_door;
+use crate::grid::room::Wall as Wall;
+use crate::grid::tile::Tile as Tile;
+use crate::grid::tile::TileIcon as TileIcon;
+use crate::grid::tile::TileKind as TileKind;
 
 use rand::Rng;
 
-/// Starting Area 3
-/// 
-/// Base Shape
-/// # # # # # # # # # # # #
-/// # # # # # # # # # # # #
-/// # #                 # #
-/// # #                 # #
-/// # #                 # #
-/// # #                 # #
-/// # #                 # #
-/// # #                 # #
-/// # #                 # #
-/// # #                 # #
-/// # # # # # # # # # # # #
-/// # # # # # # # # # # # # 
-/// 
-/// 3 doors will need to be added randomly: 3 random walls not already occupied by a passage
-/// d for 'door'
-///
-/// # # # # # #   # # # # #
-/// # # # # # # d # # # # #
-/// # #                 # #
-/// # #                 # #
-/// # #                 # #
-/// # #                 # #
-///   d                 # #
-/// # #                 # #
-/// # #                 # #
-/// # #                 # #
-/// # # # # # # # # d # # #
-/// # # # # # # # #   # # # 
+// https://github.com/Ronatos/rungeon/wiki/Room#starting-area-3
 pub fn new() -> Grid {
     let wall = Node::Tile(Tile {
         kind: TileKind::Wall,
