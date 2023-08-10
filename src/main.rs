@@ -1,13 +1,5 @@
 /*
-    - Starting areas do not always lead to the correct size passages, only 5ft or 10ft wide ones.
-    - Doors shouldn't just lead to 5ft wide passages. There's a whole table that need to be rolled upon to handle that.
-
-    I'm going to build a player, and figure out how to have them traverse between starting areas.
-    I think the needs of the player are going to guide the construction of the map. What is the point of an exit if
-    there is nobody to go through it? Am I just constructing pretty pictures?
-
-    I'm going to stick with a deliberate movement system instead of implementing a key event system for now.
-    So assuming I have a player object, I need to put them somewhere.
+    - Starting areas do not always lead to the correct size passages, only 5ft or 10ft wide ones. Should also include 20, 30, and 40 (with variety)
 */
 
 mod dice;
