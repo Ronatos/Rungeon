@@ -1,3 +1,4 @@
+pub mod map;
 pub mod room;
 pub mod tile;
 
@@ -34,7 +35,7 @@ impl fmt::Display for Grid {
             }
             write!(f, "{}", node)?;
         }
-        write!(f, "{}\n----------", "") // Remove the \n---------- when you're done debugging
+        write!(f, "{}", "") // Remove the \n---------- when you're done debugging
     }
 }
 
