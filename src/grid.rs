@@ -1,7 +1,4 @@
-pub mod map;
-pub mod room;
-pub mod tile;
-
+use crate::tile;
 use std::fmt;
 
 // https://github.com/Ronatos/rungeon/wiki/Grid#gridgrid
@@ -35,7 +32,7 @@ impl fmt::Display for Grid {
             }
             write!(f, "{}", node)?;
         }
-        write!(f, "{}", "") // Remove the \n---------- when you're done debugging
+        write!(f, "{}", "")
     }
 }
 

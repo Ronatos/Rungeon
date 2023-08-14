@@ -1,10 +1,8 @@
+pub mod room;
+
 use crate::dice;
 use crate::grid::Grid as Grid;
 use crate::grid::Node as Node;
-use crate::grid::room as room;
-// use crate::grid::tile::Tile as Tile;
-// use crate::grid::tile::TileIcon as TileIcon;
-// use crate::grid::tile::TileKind as TileKind;
 
 enum RoomGenerated {
     True(Grid),
@@ -37,17 +35,17 @@ pub fn new(num_rows: usize, num_columns: usize, starting_area_index: usize) -> G
     // Every map needs a starting area, so we can safely generate this first.
     let starting_area_configuration = dice::roll(10);
     let starting_area: Grid = match starting_area_configuration {
-        1 => room::starting_area::starting_area_1::new(),
-        2 => room::starting_area::starting_area_2::new(),
-        3 => room::starting_area::starting_area_3::new(),
-        4 => room::starting_area::starting_area_4::new(),
-        5 => room::starting_area::starting_area_5::new(),
-        6 => room::starting_area::starting_area_6::new(),
-        7 => room::starting_area::starting_area_7::new(),
-        8 => room::starting_area::starting_area_8::new(),
-        9 => room::starting_area::starting_area_9::new(),
-        10 => room::starting_area::starting_area_10::new(),
-        _ => room::starting_area::starting_area_1::new()
+        1 => room::starting_area_1::new(),
+        2 => room::starting_area_2::new(),
+        3 => room::starting_area_3::new(),
+        4 => room::starting_area_4::new(),
+        5 => room::starting_area_5::new(),
+        6 => room::starting_area_6::new(),
+        7 => room::starting_area_7::new(),
+        8 => room::starting_area_8::new(),
+        9 => room::starting_area_9::new(),
+        10 => room::starting_area_10::new(),
+        _ => room::starting_area_1::new()
     };
 
     checklist[starting_area_index] = RoomGenerated::True(starting_area.clone());

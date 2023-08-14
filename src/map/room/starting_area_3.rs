@@ -1,10 +1,10 @@
 use crate::grid::Grid as Grid;
 use crate::grid::Node as Node;
-use crate::grid::room::place_door as place_door;
-use crate::grid::room::Wall as Wall;
-use crate::grid::tile::Tile as Tile;
-use crate::grid::tile::TileIcon as TileIcon;
-use crate::grid::tile::TileKind as TileKind;
+use crate::map::room::place_door as place_door;
+use crate::map::room::Wall as Wall;
+use crate::tile::Tile as Tile;
+use crate::tile::TileIcon as TileIcon;
+use crate::tile::TileKind as TileKind;
 
 use rand::Rng;
 

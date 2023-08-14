@@ -1,10 +1,40 @@
-pub mod starting_area;
+pub mod chamber_1;
+pub mod chamber_2;
+pub mod chamber_3;
+pub mod chamber_4;
+pub mod chamber_5;
+pub mod chamber_6;
+pub mod chamber_7;
+pub mod chamber_8;
+pub mod chamber_9;
+pub mod chamber_10;
+pub mod chamber_11;
+pub mod chamber_12;
+pub mod passage_1;
+pub mod passage_2;
+pub mod passage_3;
+pub mod passage_4;
+pub mod passage_5;
+pub mod passage_6;
+pub mod passage_7;
+pub mod passage_8;
+pub mod passage_9;
+pub mod starting_area_1;
+pub mod starting_area_2;
+pub mod starting_area_3;
+pub mod starting_area_4;
+pub mod starting_area_5;
+pub mod starting_area_6;
+pub mod starting_area_7;
+pub mod starting_area_8;
+pub mod starting_area_9;
+pub mod starting_area_10;
 
 use crate::grid::Grid as Grid;
 use crate::grid::Node as Node;
-use crate::grid::tile::Tile as Tile;
-use crate::grid::tile::TileIcon as TileIcon;
-use crate::grid::tile::TileKind as TileKind;
+use crate::tile::Tile as Tile;
+use crate::tile::TileIcon as TileIcon;
+use crate::tile::TileKind as TileKind;
 
 use rand::Rng;
 
