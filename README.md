@@ -3,6 +3,8 @@ A Dungeons &amp; Dragons 5th Edition dungeon generator written in Rust.
 
 ## To do
 * Starting areas do not always lead to the correct size passages, only 5ft or 10ft wide ones. Should also include 20, 30, and 40 (with variety)
+* Passages and Chambers need to be built out
+* Exits need to be worked out and established
 
 ## Rooms, Grids, Nodes, and Tiles - How do they work?
 A Tile is the physical thing that is displayed when you're walking around in the game. Tiles have types (wall, floor, etc), and they can hold things like a goblin or a treasure chest. If a Tile is holding these things, the things on the Tile are displayed in-game instead of the Tile itself.
