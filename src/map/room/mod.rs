@@ -38,7 +38,7 @@ use crate::tile::TileKind as TileKind;
 
 use rand::Rng;
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq)]
 pub enum Wall {
     North,
     South,
