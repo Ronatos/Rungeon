@@ -38,11 +38,27 @@ use crate::tile::TileKind as TileKind;
 
 use rand::Rng;
 
+#[derive(Clone)]
 pub enum Wall {
     North,
     South,
     East,
     West
+}
+
+#[derive(Clone)]
+pub struct Room {
+    pub grid: Grid,
+    pub exits: Vec<Wall>
+}
+
+impl Room {
+    pub fn new(grid: Grid, exits: Vec<Wall>) -> Room {
+        Room {
+            grid,
+            exits
+        }
+    }
 }
 
 pub fn place_passage(mut starting_area: Grid, wall: Wall, width: usize) -> Grid {

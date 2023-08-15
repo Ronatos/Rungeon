@@ -1,6 +1,7 @@
 use crate::grid::Grid as Grid;
 use crate::grid::Node as Node;
 use crate::map::room::place_door as place_door;
+use crate::map::room::Room as Room;
 use crate::map::room::Wall as Wall;
 use crate::tile::Tile as Tile;
 use crate::tile::TileIcon as TileIcon;
@@ -9,7 +10,7 @@ use crate::tile::TileKind as TileKind;
 use rand::Rng;
 
 // https://github.com/Ronatos/rungeon/wiki/Room#starting-area-3
-pub fn new() -> Grid {
+pub fn new() -> Room {
     let wall = Node::Tile(Tile {
         kind: TileKind::Wall,
         icon: TileIcon::Wall
@@ -18,6 +19,7 @@ pub fn new() -> Grid {
         kind: TileKind::Floor,
         icon: TileIcon::Floor
     });
+    let mut exits: Vec<Wall> = Vec::new();
 
     let mut starting_area3 = Grid::new(12, vec![
         wall.clone(),wall.clone(),wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(), wall.clone(),
@@ -49,15 +51,19 @@ pub fn new() -> Grid {
         match wall_selection {
             Wall::North => {
                 starting_area3 = place_door(starting_area3, Wall::North);
+                exits.push(Wall::North);
             },
             Wall::South => {
                 starting_area3 = place_door(starting_area3, Wall::South);
+                exits.push(Wall::South);
             },
             Wall::East => {
                 starting_area3 = place_door(starting_area3, Wall::East);
+                exits.push(Wall::East);
             },
             Wall::West => {
                 starting_area3 = place_door(starting_area3, Wall::West);
+                exits.push(Wall::West);
             }
         }
 
@@ -65,5 +71,5 @@ pub fn new() -> Grid {
         exits_to_build = exits_to_build - 1;
     }
 
-    starting_area3
+    Room::new(starting_area3, exits)
 }

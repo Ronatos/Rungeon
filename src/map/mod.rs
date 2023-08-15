@@ -3,9 +3,10 @@ pub mod room;
 use crate::dice;
 use crate::grid::Grid as Grid;
 use crate::grid::Node as Node;
+use crate::map::room::Room as Room;
 
 enum RoomGenerated {
-    True(Grid),
+    True(Room),
     False
 }
 
@@ -34,7 +35,7 @@ pub fn new(num_rows: usize, num_columns: usize, starting_area_index: usize) -> G
 
     // Every map needs a starting area, so we can safely generate this first.
     let starting_area_configuration = dice::roll(10);
-    let starting_area: Grid = match starting_area_configuration {
+    let starting_area: Room = match starting_area_configuration {
         1 => room::starting_area_1::new(),
         2 => room::starting_area_2::new(),
         3 => room::starting_area_3::new(),
@@ -102,8 +103,8 @@ pub fn new(num_rows: usize, num_columns: usize, starting_area_index: usize) -> G
     // The checklist was convenient, but now we need to load in the proper values to a vector in the correct order.
     let mut map_vector: Vec<Node> = Vec::new();
     for i in &checklist {
-        if let RoomGenerated::True(grid) = i {
-            map_vector.push(Node::Room(grid.clone()));
+        if let RoomGenerated::True(room) = i {
+            map_vector.push(Node::Room(room.grid.clone()));
         };
     }
     
